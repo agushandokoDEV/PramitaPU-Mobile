@@ -1,3 +1,9 @@
 export const AUTH_LOGIN = 'AUTH_LOGIN';
 export const AUTH_LOGOUT = 'AUTH_LOGOUT';
 export const GET_LIST_LAB = 'GET_LIST_LAB';
+export const GET_LIST_TABUNG = 'GET_LIST_TABUNG';
+export const AMBIL_BAHAN = 'AMBIL_BAHAN';
+export const ANTAR_BAHAN = 'ANTAR_BAHAN';
+export const GET_LIST_KEGIATAN = 'GET_LIST_KEGIATAN';
+export const GET_DETAIL_KEGIATAN = 'GET_DETAIL_KEGIATAN';
+export const GET_RIWAYAT_KEGIATAN = 'GET_RIWAYAT_KEGIATAN';

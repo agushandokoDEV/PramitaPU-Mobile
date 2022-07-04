@@ -1,21 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, StyleSheet, ActivityIndicator, Dimensions, Text } from 'react-native';
+import { connect, useSelector } from 'react-redux';
 //import { connect, useSelector } from 'react-redux';
 import splashscreen_img from '../../assets/pramita-banner.png';
 
 const Starter = ({ navigation }) => {
-    // const { auth } = useSelector(state => state);
+    const { auth } = useSelector(state => state);
 
     useEffect(() => {
-        // if (auth.isLogin) {
-        //     navigation.replace('Home')
-        // } else {
-        //     navigation.replace('Login')
-        // }
-        //let isMounted = true;
-        setTimeout(() => {
+        if (auth.isLogin) {
+            navigation.replace('Home')
+        } else {
             navigation.replace('Login')
-        }, 3000);
+        }
+        //let isMounted = true;
+        // setTimeout(() => {
+        //     navigation.replace('Login')
+        // }, 3000);
         // if (counter == 3) {
         //     console.log('go')
         //     navigation.replace('Login')
@@ -67,4 +68,7 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Starter;
+const mapStateToProps = (state) => ({
+    auth: state.auth
+})
+export default connect(mapStateToProps)(Starter);

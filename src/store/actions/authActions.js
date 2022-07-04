@@ -4,11 +4,11 @@ import { API_URL } from "@env";
 
 const SET_AUTH_LOGIN = (params) => {
 
-    console.log('GET_LIST_LAB', API_URL+'/authenticate')
-
     const formdata = new FormData();
     formdata.append('username', params.username);
     formdata.append('password', params.password);
+
+    console.log(API_URL+'/authenticate', formdata)
     return (dispatch) => {
         dispatch({
             type: AUTH_LOGIN,
@@ -62,6 +62,48 @@ const SET_AUTH_LOGOUT = () => {
     return (dispatch) => {
         dispatch({
             type: AUTH_LOGOUT,
+            loading: true,
+            isLogin: false,
+            user: null,
+            token: '',
+            error: null
+        });
+
+        axios.post(API_URL+'/account/logout', {
+            headers: {
+                Accept: "application/json",
+                'Content-Type': 'multipart/form-data;',
+            }
+        }).then(function (res) {
+            const {success,data,token,message}=res.data
+            // console.log(message)
+            if(success){
+                dispatch({
+                    type: AUTH_LOGOUT,
+                    loading: false,
+                    isLogin: false,
+                    user: null,
+                    token: null,
+                    error: null
+                });
+            }
+            
+        }).catch(function (error) {
+            dispatch({
+                type: AUTH_LOGOUT,
+                isLogin: false,
+                user: null,
+                loading: false,
+                error: error.message,
+            });
+        });
+    }
+}
+
+const SET_AUTH_RESET = () => {
+    return (dispatch) => {
+        dispatch({
+            type: AUTH_LOGIN,
             loading: false,
             isLogin: false,
             user: null,
@@ -71,4 +113,4 @@ const SET_AUTH_LOGOUT = () => {
     }
 }
 
-export { SET_AUTH_LOGIN, SET_AUTH_LOGOUT };
+export { SET_AUTH_LOGIN, SET_AUTH_LOGOUT,SET_AUTH_RESET };

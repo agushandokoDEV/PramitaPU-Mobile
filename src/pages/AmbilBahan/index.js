@@ -1,73 +1,240 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, ScrollView, StyleSheet } from 'react-native';
-import { Button, Headline, Paragraph, Subheading, TextInput, Dialog, RadioButton } from 'react-native-paper';
+import { Text, View, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { Button, Headline, Paragraph, Subheading, TextInput, Dialog, RadioButton,List,Checkbox, Divider, IconButton, Badge, Snackbar, Modal, Provider, Portal, ActivityIndicator } from 'react-native-paper';
 import { useSelector,useDispatch, connect } from 'react-redux';
-import { SET_LIST_LAB } from '../../store';
-import DropDownPicker from 'react-native-dropdown-picker';
-import SearchableDropdown from 'react-native-searchable-dropdown';
+import { SET_LIST_LAB,SET_LIST_TABUNG,SET_AMBIL_BAHAN,SET_AMBIL_BAHAN_RESET } from '../../store';
+import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
-const AmbilBahan = () => {
+const AmbilBahan = ({navigation}) => {
 
-    const { lab } = useSelector(state => state);
+    const { lab,tabung,ambilbahan } = useSelector(state => state);
     const dispatch = useDispatch();
 
-    const [open, setOpen] = useState(false);
-    const [LabSelected, SetLabSelected] = useState('');
-    const [items, setItems] = useState([
-        {label: 'Apple', value: 'apple'},
-        {label: 'Banana', value: 'banana'}
-      ]);
+    const [openMsg, setOpenMsg] = useState(false);
+    const [visibleMdl, setvisibleMdl] = useState(true);
+    
+    const [LabSelected, SetLabSelected] = useState(null);
+    const [namapasien, SetNamapasien] = useState('');
+    const [ygMenyerahkan, SetygMenyerahkan] = useState('');
+    const [listSelectedtabung, SETlistSelectedtabung] = useState([]);
+    const [listDatatabung, SETlistdatatabung] = useState([]);
 
     useEffect(()=>{
-        getLab()
+        dispatch(SET_AMBIL_BAHAN_RESET())
     },[])
 
+    useEffect(()=>{
+        getTabung()
+    },[])
 
-    function getLab() {
-        dispatch(SET_LIST_LAB())
+    useEffect(()=>{
+        if(ambilbahan.message != null || ambilbahan.error != null){
+            setOpenMsg(true)
+        }
+    },[ambilbahan])
+
+    const onCheckTabung = (key) => {
+        var temp = listSelectedtabung;
+        var datapayselected = listDatatabung;
+        if (temp.includes(key.id)) {
+            SETlistSelectedtabung(temp.filter(item => item !== key.id))
+            SETlistdatatabung(datapayselected.filter(item => item.id !== key.id))
+        } else {
+            SETlistSelectedtabung(old => [...old, key.id])
+            SETlistdatatabung(old => [...old, {
+                id:key.id,
+                jumlah:0
+            }])
+        }
     }
 
-    function setLab(params) {
+    function getTabung() {
+        dispatch(SET_LIST_TABUNG())
+    }
+
+    const selectLab = (params=null)=>{
         SetLabSelected(params)
-        setOpen(!open)
+    }
+
+    function findArray(operator,id,k) {
+
+        let items = [...listDatatabung];
+        var objIndex = items.findIndex((obj => obj.id == id));
+        if(operator === '+'){
+            items[objIndex].jumlah = items[objIndex].jumlah + 1
+        }else{
+            if(items[objIndex].jumlah != 0){
+                items[objIndex].jumlah = items[objIndex].jumlah - 1
+            }
+        }
+
+        SETlistdatatabung(items)
+    }
+
+    function kirim() {
+        dispatch(SET_AMBIL_BAHAN({
+            labid:LabSelected.id,
+            nama_pasien:namapasien,
+            yg_menyerahkan:ygMenyerahkan,
+            tabung:listDatatabung
+        }))
     }
 
     return (
         <View style={styles.main}>
             
             <ScrollView>
+                
                 <View style={styles.container}>
-                    {/* <View>
-                        <Headline>Headline</Headline>
-                        <Subheading>Paragraph</Subheading>
-                    </View> */}
+                    
                     <View style={{ marginTop: 20 }}>
-                        <TextInput label="Email" placeholder='masukan email' mode='outlined' style={styles.input} />
-                        <TextInput label="Email" mode='flat' style={styles.input}/>
+                        <TextInput
+                            style={styles.input}
+                            label="Pilih Lab"
+                            mode='outlined'
+                            right={<TextInput.Icon name="arrow-right" onPress={()=>navigation.navigate('ListLab',{onSelectLab:selectLab})}/>}
+                            value={LabSelected === null?'':LabSelected?.name}
+                            // onFocus={()=>navigation.navigate('ListLab',{selectLab:selectLab})}
+                            editable={false}
+                            // onChange={()=>console.log('aaa')}
+                        />
+                        <TextInput
+                            label="Nama Pasien" 
+                            mode='outlined' style={styles.input}
+                            value={namapasien}
+                            onChangeText={(val) => SetNamapasien(val)}
+                            outlineColor='#ced4da'
+                            activeOutlineColor='#ced4da'
+                            theme={{ colors: { primary: '#475569',underlineColor:'transparent',}}}
+                        />
                         
-                        <Button style={styles.btnSubmit} mode="contained" onPress={() => setOpen(!open)}>
-                            Simpan
-                        </Button>
-                    </View>
-                </View>
-            </ScrollView>
-
-            <Dialog visible={open} onDismiss={()=>setOpen(!open)}>
-                <Dialog.Title>This is a title</Dialog.Title>
-                <Dialog.ScrollArea>
-                    <ScrollView>
-                        <RadioButton.Group onValueChange={setLab} value={LabSelected}>
+                        <View style={{marginTop:10}}>
+                            {/* <Headline>Tabung</Headline> */}
+                            {/* <Text>{JSON.stringify(LabSelected)}</Text> */}
+                            <Subheading>Pilih Tabung & Jumlah</Subheading>
+                            <Divider style={{marginTop:10}} />
+                        </View>
                         {
-                            lab.list.map((item)=>{
+                            tabung.loading?
+                            Array.from(Array(5)).map((k,v)=>{
                                 return(
-                                    <RadioButton.Item key={item.id} label={item.name} value={item.id} />
+                                    <View key={v} style={{marginVertical:25}}>
+                                        <SkeletonPlaceholder>
+                                            <View style={{ flexDirection: "row", justifyContent:'space-between'}}>
+                                                <View style={{ marginLeft: 20 }}>
+                                                    <View style={{ width: 140, height: 20, borderRadius: 4 }} />
+                                                    <View
+                                                        style={{ marginTop: 6, width: 80, height: 20, borderRadius: 4 }}
+                                                    />
+                                                </View>
+                                                <View style={{ width: 20, height: 20, borderRadius: 50 }} />
+                                            </View>
+                                        </SkeletonPlaceholder>
+                                    </View>
                                 )
                             })
+                            :
+                            <View style={{marginBottom:30}}>
+                            {
+                                tabung.list.map((item,k)=>{
+                                    return(
+                                        <View key={item.id} style={styles.listbox}>
+                                            <List.Item
+                                                title={item.nama}
+                                                titleStyle={{fontSize:18}}
+                                                description={()=>
+                                                    // <ListTabung tabungitem={item} key={item.id}/>
+                                                    <View style={{flexDirection:'row',alignItems: 'flex-start',marginTop:15}}>
+                                                        <View style={{backgroundColor:'#ddd'}}>
+                                                            <IconButton
+                                                                disabled={listSelectedtabung.includes(item.id) ? false:true}
+                                                                icon="minus"
+                                                                size={10}
+                                                                onPress={() => findArray('-',item.id,k)}
+                                                            />
+                                                        </View>
+                                                        <View style={{backgroundColor:'red',marginHorizontal:5}}>
+                                                            {/* <Text style={{fontSize:16}}>{
+                                                                listDatatabung.find(o => o.id === item.id)?.jumlah
+                                                            }</Text> */}
+                                                            <Badge size={25}>
+                                                                {
+                                                                    listDatatabung.find(o => o.id === item.id) != undefined?listDatatabung.find(o => o.id === item.id)?.jumlah:0
+                                                                }
+                                                            </Badge>
+                                                        </View>
+                                                        <View style={{backgroundColor:'#ddd'}}>
+                                                            <IconButton
+                                                                disabled={listSelectedtabung.includes(item.id) ? false:true}
+                                                                icon="plus"
+                                                                size={10}
+                                                                onPress={() => findArray('+',item.id,k)}
+                                                            />
+                                                        </View>
+                                                    </View>
+                                                }
+                                                right={props => <View style={{justifyContent:'center'}}><Checkbox.Item status={listSelectedtabung.includes(item.id) ? 'checked' : 'unchecked'} color='#e62e2d' onPress={()=>onCheckTabung(item)}/></View>}
+                                            />
+                                        </View>
+                                    )
+                                })
+                            }
+
+                            <TextInput
+                                label="Yang Menyerahkan" 
+                                mode='outlined' style={styles.input}
+                                value={ygMenyerahkan}
+                                onChangeText={(val) => SetygMenyerahkan(val)}
+                                outlineColor='#ced4da'
+                                activeOutlineColor='#ced4da'
+                                theme={{ colors: { primary: '#475569',underlineColor:'transparent',}}}
+                            />
+                        </View>
                         }
-                        </RadioButton.Group>
-                    </ScrollView>
-                </Dialog.ScrollArea>
-            </Dialog>
+                    </View>
+                    
+                </View>
+                
+            </ScrollView>
+            <View style={styles.btncheckout}>
+                <Button
+                    disabled={listDatatabung.length > 0 && LabSelected != null && namapasien !='' && ygMenyerahkan !='' || ambilbahan.loading? false:true}
+                    style={styles.btnSubmit} 
+                    mode="contained" 
+                    onPress={kirim}>
+                    {
+                        ambilbahan.loading?'Sedang Mengirim':'Kirim'
+                    }
+                </Button>
+            </View>
+            <Provider>
+                <Portal>
+                    <Modal visible={ambilbahan.loading} dismissable={false} contentContainerStyle={{backgroundColor: '#fff', padding: 20,marginHorizontal:'10%'}}>
+                        <ActivityIndicator animating={true} size='large' color='#e62e2d'/>
+                        <Text style={{textAlign:'center',marginTop:10}}>Mohon tunggu...</Text>
+                    </Modal>
+                </Portal>
+            </Provider>
+            
+            <View>
+                <Snackbar
+                    style={ambilbahan.error != null? {backgroundColor:'red'}:{backgroundColor:'green'}}
+                    visible={openMsg}
+                    onDismiss={()=>setOpenMsg(false)}
+                    action={{
+                        label: 'Ok',
+                        onPress: () => {
+                            dispatch(SET_AMBIL_BAHAN_RESET())
+                            ambilbahan.error != null?null:navigation.navigate('Home')
+                        },
+                    }}>
+                    {
+                        ambilbahan.error != null? ambilbahan.error:'Ambil bahan berhasil dikirim'
+                    }
+                </Snackbar>
+
+                
+            </View>
         </View>
     )
 }
@@ -80,7 +247,8 @@ const styles = StyleSheet.create({
     container: {
 
         paddingTop: 10,
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        marginBottom:'30%'
     },
     input: {
         marginBottom: 10,
@@ -90,12 +258,31 @@ const styles = StyleSheet.create({
         marginTop:10,
         height: 50,
         justifyContent: 'center',
-        backgroundColor: '#e62e2d'
+        backgroundColor: '#e62e2d',
+        borderRadius:0
+    },
+    listbox: {
+        // backgroundColor: '#fff',
+        // borderWidth: 0.1,
+        marginBottom: 15,
+        // elevation: 1,
+        // borderRadius: 3,
+        borderBottomWidth:0.5
+    },
+    btncheckout: {
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        // backgroundColor: 'blue',
+        // borderTopWidth: 0.5,
+        // borderTopColor: '#e62e2d'
     }
 })
 
 
 const mapStateToProps = (state) => ({
-    lab: state.lab
+    lab: state.lab,
+    tabung:state.tabung,
+    ambilbahan:state.ambilbahan
 })
-export default connect(mapStateToProps, { SET_LIST_LAB })(AmbilBahan);
+export default connect(mapStateToProps, { SET_LIST_LAB,SET_LIST_TABUNG,SET_AMBIL_BAHAN })(AmbilBahan);

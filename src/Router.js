@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Starter, Login, Home, SampleExcel, Formulir,AmbilBahan } from './pages';
+import { Starter, Login, Home, ListLab, Formulir,AmbilBahan, DetailKegiatan,AntarBahan } from './pages';
 
 const Stack = createStackNavigator();
 
@@ -21,6 +21,24 @@ const Router = () => {
                 headerShown: true,
                 headerTintColor: '#fff',
                 title: 'Ambil Bahan',
+                headerStyle: { backgroundColor: '#e62e2d', elevation: 0 }
+            }}></Stack.Screen>
+            <Stack.Screen name="AntarBahan" component={AntarBahan} options={{
+                headerShown: true,
+                headerTintColor: '#fff',
+                title: 'Antar Bahan',
+                headerStyle: { backgroundColor: '#e62e2d', elevation: 0 }
+            }}></Stack.Screen>
+            <Stack.Screen name="ListLab" component={ListLab} options={{
+                headerShown: true,
+                headerTintColor: '#fff',
+                title: 'Pilih Lab',
+                headerStyle: { backgroundColor: '#e62e2d', elevation: 0 }
+            }}></Stack.Screen>
+            <Stack.Screen name="DetailKegiatan" component={DetailKegiatan} options={{
+                headerShown: true,
+                headerTintColor: '#fff',
+                title: '',
                 headerStyle: { backgroundColor: '#e62e2d', elevation: 0 }
             }}></Stack.Screen>
         </Stack.Navigator>

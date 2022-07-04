@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, Image, Dimensions, StatusBar } from 'react-native';
-import IconBoxMenu from '../../component/IconBoxMenu';
-import header_img from '../../assets/pramita-banner-logo.png';
-import icon_article from '../../assets/icons/icon_article.png';
+import React,{ useEffect } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import HomeTab from './Tabs/HomeTab';
+import ProfileTab from './Tabs/ProfileTab';
 import { useSelector,useDispatch, connect } from 'react-redux';
 import { SET_AUTH_LOGOUT } from '../../store';
-import { Button } from 'react-native-paper';
+import RiwayatTab from './Tabs/RiwayatTab';
+
+const Tab = createBottomTabNavigator();
 
 const Home = ({ navigation }) => {
 
@@ -23,58 +26,70 @@ const Home = ({ navigation }) => {
     }
 
     return (
-        <View style={styles.main}>
-            <View style={styles.divImgHeader}>
-                <Image source={header_img} style={styles.imgHeader} resizeMode='stretch' />
-            </View>
-            <View style={styles.container}>
-                <View style={styles.blokMenu}>
-                    <IconBoxMenu icon={icon_article} title='Ambil Bahan' onPress={() => navigation.navigate('AmbilBahan')} />
-                    <IconBoxMenu icon={icon_article} title='Antar Bahan' onPress={() => navigation.navigate('Formulir')} />
-                    <IconBoxMenu icon={icon_article} title='Instansi' onPress={() => navigation.navigate('Formulir')} />
-                </View>
-                {/* <View style={styles.blokMenu}>
-                    <IconBoxMenu icon={icon_article} title='Formulir' onPress={() => navigation.navigate('Formulir')} />
-                    <IconBoxMenu icon={icon_article} title='Formulir' onPress={() => navigation.navigate('Formulir')} />
-                    <IconBoxMenu icon={icon_article} title='Excel' onPress={() => navigation.navigate('SampleExcel')} />
-                </View> */}
-            </View>
-            <Button style={styles.btnSubmit} mode="contained" onPress={() => logout()}>
-                Logout
-            </Button>
-        </View>
+        <Tab.Navigator
+            //shifting={false}
+            initialRouteName="HomeTabs"
+            screenOptions={{
+                tabBarActiveTintColor: '#e62e2d',
+                tabBarInactiveTintColor: '#ccc',
+                tabBarStyle: { backgroundColor: '#fff', borderTopColor: 'gold' }
+            }}
+        >
+            <Tab.Screen name="HomeTabs" component={HomeTab} options={{
+                tabBarIcon: ({ color }) => (
+                    <View>
+                        <MaterialIcons name="home" size={35} color={color} />
+                    </View>
+                ),
+                // tabBarShowLabel: false,
+                tabBarLabel: "Beranda",
+                headerShown: false
+            }}></Tab.Screen>
+            <Tab.Screen name="RiwayatTabs" component={RiwayatTab} options={{
+                tabBarIcon: ({ color }) => (
+                    <MaterialIcons name="history" size={35} color={color} />
+                ),
+                // tabBarShowLabel: false,
+                tabBarLabel: "Riwayat",
+                headerShown: true,
+                title: 'Riwayat Kegiatan',
+                headerRightContainerStyle: { paddingHorizontal: 15 },
+                headerTitleStyle:{color:'#fff'},
+                
+                headerStyle: { backgroundColor: '#e62e2d', elevation: 0, borderBottomWidth: 0, },
+            }}></Tab.Screen>
+
+            <Tab.Screen name="ProfileTabs" component={ProfileTab} options={{
+                tabBarIcon: ({ color }) => (
+                    <MaterialIcons name="person" size={35} color={color} />
+                ),
+                // tabBarShowLabel: false,
+                tabBarLabel: "Profile",
+                headerShown: true,
+                title: 'Profile',
+                headerRightContainerStyle: { paddingHorizontal: 15 },
+                headerTitleStyle:{color:'#fff'},
+                headerRight: () => {
+                    return (
+                        <TouchableOpacity onPress={logout}>
+                            <MaterialIcons name="logout" size={35} color='#fff' />
+                        </TouchableOpacity>
+                    )
+                },
+                
+                headerStyle: { backgroundColor: '#e62e2d', elevation: 0, borderBottomWidth: 0, },
+            }}></Tab.Screen>
+            {/* <Tab.Screen name="AboutTabs" component={AboutTabs} options={{
+                tabBarIcon: ({ color }) => (
+                    <MaterialIcons name="info" size={35} color={color} />
+                ),
+                tabBarShowLabel: false,
+                tabBarLabel: "Profile",
+                headerShown: false
+            }}></Tab.Screen> */}
+        </Tab.Navigator>
     );
 }
-
-const { height, width } = Dimensions.get('window');
-
-const styles = StyleSheet.create({
-    main: {
-        flex: 1
-    },
-    divImgHeader: {
-        elevation: 1,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ddd',
-    },
-    imgHeader: {
-        width: width,
-        height: height / 4
-    },
-    container: {
-        //backgroundColor: '#fff',
-        marginVertical: 10
-    },
-    blokMenu: {
-        //backgroundColor: '#fff',
-        flexDirection: "row",
-        justifyContent: "space-between",
-        paddingHorizontal: 10,
-        paddingVertical: 20,
-        marginHorizontal: 5,
-        borderRadius: 5
-    }
-})
 
 const mapStateToProps = (state) => ({
     auth: state.auth

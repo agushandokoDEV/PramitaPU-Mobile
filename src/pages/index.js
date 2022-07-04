@@ -4,4 +4,8 @@ import Home from "./Home";
 import SampleExcel from './Sample/CreateExcel';
 import Formulir from './Sample/Formulir';
 import AmbilBahan from "./AmbilBahan";
-export { Starter, Login, Home, SampleExcel, Formulir,AmbilBahan }
+import AntarBahan from "./AntarBahan";
+import ListLab from "./Lab/ListLab";
+import DetailKegiatan from "./Kegiatan/DetailKegiatan";
+
+export { Starter, Login, Home, ListLab,AmbilBahan,AntarBahan,DetailKegiatan }
