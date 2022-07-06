@@ -24,45 +24,113 @@ const RiwayatTab = ({route,navigation}) => {
         dispatch(SET_RIWAYAT_KEGIATAN())
     }
 
-    function getDetail(payload) {
+    function getDetail(payload,title) {
         dispatch(RESET_DETAIL_KEGIATAN())
-        navigation.navigate('DetailKegiatan',{kegiatan:payload})
+        navigation.navigate('DetailKegiatan',{kegiatan:payload,title:title})
     }
 
     const ListKegiatan=(item)=>{
-        if(item.jenis === 'ambil_bahan'){
-            return(
-                <TouchableOpacity onPress={()=>getDetail(item)} key={item.id}>
-                    <List.Item
-                        title={item?.lab.nama}
-                        description={()=>
-                            <View style={{marginTop:5}}>
-                                <Text style={{backgroundColor:'#f87171',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Ambil Bahan</Text>
-                                <Text style={{backgroundColor:'gray',width:200,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12,marginTop:3}}>{moment(item.created_at).locale('id').format('LLLL')}</Text>
-                            </View>
-                        }
-                        right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
-                    />
-                    <Divider style={{height:0.5}}/>
-                </TouchableOpacity>
-            )
-        }else if(item.jenis === 'antar_bahan'){
-            return(
-                <TouchableOpacity onPress={()=>getDetail(item)} key={item.id}>
-                    <List.Item
-                        title={item?.lab.nama}
-                        description={()=>
-                            <View style={{marginTop:5}}>
-                                <Text style={{backgroundColor:'#004085',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Antar Bahan</Text>
-                                <Text style={{backgroundColor:'gray',width:200,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12,marginTop:3}}>{moment(item.created_at).locale('id').format('LLLL')}</Text>
-                            </View>
-                        }
-                        // right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
-                    />
-                    <Divider style={{height:0.5}}/>
-                </TouchableOpacity>
-            )
+        switch (item.jenis) {
+            case 'ambil_bahan':
+                return(
+                    <TouchableOpacity onPress={()=>getDetail(item,item.lab?.nama)} key={item.id}>
+                        <List.Item
+                            title={item?.lab.nama}
+                            description={()=>
+                                <View style={{marginTop:5}}>
+                                    <Text style={{backgroundColor:'#004085',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Ambil Bahan</Text>
+                                    <Text style={{backgroundColor:'gray',width:200,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12,marginTop:3}}>{moment(item.created_at).locale('id').format('LLLL')}</Text>
+                                </View>
+                            }
+                            right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                    </TouchableOpacity>
+                )
+            case 'antar_bahan':
+                return(
+                    <TouchableOpacity onPress={()=>getDetail(item,item.lab?.nama)} key={item.id}>
+                        <List.Item
+                            title={item?.lab.nama}
+                            description={()=>
+                                <View style={{marginTop:5}}>
+                                    <Text style={{backgroundColor:'#16a34a',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Antar Bahan</Text>
+                                    <Text style={{backgroundColor:'gray',width:200,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12,marginTop:3}}>{moment(item.created_at).locale('id').format('LLLL')}</Text>
+                                </View>
+                            }
+                            // right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                    </TouchableOpacity>
+                )
+            case 'instansi':
+                return(
+                    <TouchableOpacity onPress={()=>getDetail(item,item.instansi?.jenis_keg)} key={item.id}>
+                        <List.Item
+                            title={item?.instansi.tujuan}
+                            description={()=>
+                                <View style={{marginTop:5}}>
+                                    <Text style={{backgroundColor:'#721c24',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Instansi</Text>
+                                    <Text style={{backgroundColor:'gray',width:200,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12,marginTop:3}}>{moment(item.created_at).locale('id').format('LLLL')}</Text>
+                                </View>
+                            }
+                            // right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                    </TouchableOpacity>
+                )
+            case 'pengantaran_dokter':
+                return(
+                    <TouchableOpacity onPress={()=>getDetail(item,item.pengantarandokter?.jenis_keg)} key={item.id}>
+                        <List.Item
+                            title={item?.pengantarandokter.tujuan}
+                            description={()=>
+                                <View style={{marginTop:5}}>
+                                    <Text style={{backgroundColor:'#856404',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Lain-lain</Text>
+                                    <Text style={{backgroundColor:'gray',width:200,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12,marginTop:3}}>{moment(item.created_at).locale('id').format('LLLL')}</Text>
+                                </View>
+                            }
+                            // right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                    </TouchableOpacity>
+                )
+            default:
+                break;
         }
+        // if(item.jenis === 'ambil_bahan'){
+        //     return(
+        //         <TouchableOpacity onPress={()=>getDetail(item)} key={item.id}>
+        //             <List.Item
+        //                 title={item?.lab.nama}
+        //                 description={()=>
+        //                     <View style={{marginTop:5}}>
+        //                         <Text style={{backgroundColor:'#004085',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Ambil Bahan</Text>
+        //                         <Text style={{backgroundColor:'gray',width:200,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12,marginTop:3}}>{moment(item.created_at).locale('id').format('LLLL')}</Text>
+        //                     </View>
+        //                 }
+        //                 right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
+        //             />
+        //             <Divider style={{height:0.5}}/>
+        //         </TouchableOpacity>
+        //     )
+        // }else if(item.jenis === 'antar_bahan'){
+        //     return(
+        //         <TouchableOpacity onPress={()=>getDetail(item)} key={item.id}>
+        //             <List.Item
+        //                 title={item?.lab.nama}
+        //                 description={()=>
+        //                     <View style={{marginTop:5}}>
+        //                         <Text style={{backgroundColor:'#0c5460',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Antar Bahan</Text>
+        //                         <Text style={{backgroundColor:'gray',width:200,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12,marginTop:3}}>{moment(item.created_at).locale('id').format('LLLL')}</Text>
+        //                     </View>
+        //                 }
+        //                 // right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
+        //             />
+        //             <Divider style={{height:0.5}}/>
+        //         </TouchableOpacity>
+        //     )
+        // }
     }
 
     return (

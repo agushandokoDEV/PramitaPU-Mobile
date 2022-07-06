@@ -1,6 +1,7 @@
 import axios from "axios";
 import { AUTH_LOGIN, AUTH_LOGOUT } from "../actionsType";
 import { API_URL } from "@env";
+import store from "..";
 
 const SET_AUTH_LOGIN = (params) => {
 
@@ -8,7 +9,7 @@ const SET_AUTH_LOGIN = (params) => {
     formdata.append('username', params.username);
     formdata.append('password', params.password);
 
-    console.log(API_URL+'/authenticate', formdata)
+    // console.log(API_URL+'/authenticate', formdata)
     return (dispatch) => {
         dispatch({
             type: AUTH_LOGIN,
@@ -59,24 +60,21 @@ const SET_AUTH_LOGIN = (params) => {
 }
 
 const SET_AUTH_LOGOUT = () => {
+    console.log(store.getState().auth.token)
     return (dispatch) => {
         dispatch({
             type: AUTH_LOGOUT,
-            loading: true,
-            isLogin: false,
-            user: null,
-            token: '',
-            error: null
+            loading: true
         });
 
         axios.post(API_URL+'/account/logout', {
             headers: {
-                Accept: "application/json",
-                'Content-Type': 'multipart/form-data;',
+                Authorization:"Bearer "+store.getState().auth.token,
+                Accept: "application/json"
             }
         }).then(function (res) {
             const {success,data,token,message}=res.data
-            // console.log(message)
+            console.log(res.data)
             if(success){
                 dispatch({
                     type: AUTH_LOGOUT,
@@ -89,12 +87,13 @@ const SET_AUTH_LOGOUT = () => {
             }
             
         }).catch(function (error) {
+            console.log(error)
             dispatch({
                 type: AUTH_LOGOUT,
                 isLogin: false,
                 user: null,
                 loading: false,
-                error: error.message,
+                error: null,
             });
         });
     }

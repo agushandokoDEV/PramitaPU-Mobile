@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { Text, View, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { Button, Headline, Paragraph, Subheading, TextInput, Dialog, RadioButton,List,Checkbox, Divider, IconButton, Badge, Snackbar, Modal, Provider, Portal, ActivityIndicator } from 'react-native-paper';
 import { useSelector,useDispatch, connect } from 'react-redux';
-import { SET_LIST_LAB,SET_LIST_TABUNG,SET_AMBIL_BAHAN,SET_AMBIL_BAHAN_RESET } from '../../store';
+import { SET_LIST_TABUNG,SET_AMBIL_BAHAN,SET_AMBIL_BAHAN_RESET } from '../../store';
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
 const AmbilBahan = ({navigation}) => {
 
-    const { lab,tabung,ambilbahan } = useSelector(state => state);
+    const { tabung,ambilbahan } = useSelector(state => state);
     const dispatch = useDispatch();
 
     const [openMsg, setOpenMsg] = useState(false);
@@ -218,7 +218,7 @@ const AmbilBahan = ({navigation}) => {
             
             <View>
                 <Snackbar
-                    style={ambilbahan.error != null? {backgroundColor:'red'}:{backgroundColor:'green'}}
+                    style={ambilbahan.error != null? {backgroundColor:'red'}:{backgroundColor:'#0c5460'}}
                     visible={openMsg}
                     onDismiss={()=>setOpenMsg(false)}
                     action={{
@@ -281,8 +281,7 @@ const styles = StyleSheet.create({
 
 
 const mapStateToProps = (state) => ({
-    lab: state.lab,
     tabung:state.tabung,
     ambilbahan:state.ambilbahan
 })
-export default connect(mapStateToProps, { SET_LIST_LAB,SET_LIST_TABUNG,SET_AMBIL_BAHAN })(AmbilBahan);
+export default connect(mapStateToProps, {SET_LIST_TABUNG,SET_AMBIL_BAHAN })(AmbilBahan);

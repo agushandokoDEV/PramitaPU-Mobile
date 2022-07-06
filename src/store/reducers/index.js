@@ -5,6 +5,8 @@ import labReducers from "./labReducers";
 import tabungReducers from "./tabungReducers";
 import kegiatanReducers from "./kegiatanReducers";
 import antarbahanReducers from "./antarbahanReducers";
+import instansiReducers from "./instansiReducers";
+import pengantarandokterReducers from "./pengantarandokterReducers";
 
 export default combineReducers({
     auth: authReducers,
@@ -12,5 +14,7 @@ export default combineReducers({
     tabung:tabungReducers,
     ambilbahan:ambilbahanReducers,
     antarbahan:antarbahanReducers,
-    kegiatan:kegiatanReducers
+    kegiatan:kegiatanReducers,
+    instansi:instansiReducers,
+    pengantarandokter:pengantarandokterReducers
 });

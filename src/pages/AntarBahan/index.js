@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import { Button, Headline, Paragraph, Subheading, TextInput, Dialog, RadioButton,List,Checkbox, Divider, IconButton, Badge, Snackbar, Modal, Provider, Portal, ActivityIndicator } from 'react-native-paper';
+import { Text, View, ScrollView, StyleSheet } from 'react-native';
+import { Button, TextInput, Snackbar, Modal, Provider, Portal, ActivityIndicator } from 'react-native-paper';
 import { useSelector,useDispatch, connect } from 'react-redux';
 import { SET_ANTAR_BAHAN,SET_ANTAR_BAHAN_RESET } from '../../store';
-import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
 const AntarBahan = ({navigation}) => {
 
@@ -12,13 +11,7 @@ const AntarBahan = ({navigation}) => {
 
     const [openMsg, setOpenMsg] = useState(false);
     const [penerima, SetPenerima] = useState('');
-    const [visibleMdl, setvisibleMdl] = useState(true);
-    
     const [LabSelected, SetLabSelected] = useState(null);
-    const [namapasien, SetNamapasien] = useState('');
-    const [ygMenyerahkan, SetygMenyerahkan] = useState('');
-    const [listSelectedtabung, SETlistSelectedtabung] = useState([]);
-    const [listDatatabung, SETlistdatatabung] = useState([]);
 
     useEffect(()=>{
         dispatch(SET_ANTAR_BAHAN_RESET())
@@ -35,7 +28,7 @@ const AntarBahan = ({navigation}) => {
     }
 
     function kirim() {
-        dispatch(SET_AMBIL_BAHAN({
+        dispatch(SET_ANTAR_BAHAN({
             labid:LabSelected.id,
             penerima:penerima
         }))
@@ -43,11 +36,8 @@ const AntarBahan = ({navigation}) => {
 
     return (
         <View style={styles.main}>
-            
             <ScrollView>
-                
                 <View style={styles.container}>
-                    
                     <View style={{ marginTop: 20 }}>
                         <TextInput
                             style={styles.input}
@@ -55,9 +45,7 @@ const AntarBahan = ({navigation}) => {
                             mode='outlined'
                             right={<TextInput.Icon name="arrow-right" onPress={()=>navigation.navigate('ListLab',{onSelectLab:selectLab})}/>}
                             value={LabSelected === null?'':LabSelected?.name}
-                            // onFocus={()=>navigation.navigate('ListLab',{selectLab:selectLab})}
                             editable={false}
-                            // onChange={()=>console.log('aaa')}
                         />
                         <TextInput
                             label="Penerima" 
@@ -69,9 +57,7 @@ const AntarBahan = ({navigation}) => {
                             theme={{ colors: { primary: '#475569',underlineColor:'transparent',}}}
                         />
                     </View>
-                    
                 </View>
-                
             </ScrollView>
             <View style={styles.btncheckout}>
                 <Button
@@ -95,7 +81,7 @@ const AntarBahan = ({navigation}) => {
             
             <View>
                 <Snackbar
-                    style={antarbahan.error != null? {backgroundColor:'red'}:{backgroundColor:'green'}}
+                    style={antarbahan.error != null? {backgroundColor:'red'}:{backgroundColor:'#0c5460'}}
                     visible={openMsg}
                     onDismiss={()=>setOpenMsg(false)}
                     action={{

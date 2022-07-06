@@ -1,14 +1,14 @@
 import Axios from "axios";
 import { API_URL } from "@env";
 import store from "../store";
-var auth = ""
-if(store.getState().auth.token){
-  auth = "Bearer "+store.getState().auth.token
-}
+// var auth = ""
+// if(store.getState().auth.token){
+//   auth = "Bearer "+store.getState().auth.token
+// }
 const Api = Axios.create({
   baseURL: API_URL,
   headers: {
-    Authorization:auth,
+    // Authorization:auth,
     "Content-Type": "application/json",
     Accept: "application/json",
   },

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dimensions, ScrollView, StyleSheet, Text, View } from 'react-native';
-import { Avatar, Card, Divider, Paragraph, Title } from 'react-native-paper';
+import { ActivityIndicator, Avatar, Card, Divider, Paragraph, Title } from 'react-native-paper';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import user_ico from '../../../assets/user.jpg';
 
@@ -20,14 +20,24 @@ const ProfileTab = () => {
                 </View>
 
                 <View style={styles.container}>
-                    <Card style={{ borderColor: '#ddd', borderWidth: 1 }}>
-                        <Card.Content>
-                            <Title style={{ textAlign: 'center' }}>{auth?.user.namalengkap}</Title>
-                            {/* <Divider style={{ height: 3, marginVertical: 5 }} /> */}
-                            <Paragraph style={{ textAlign: 'center' }}>@{auth?.user.username}</Paragraph>
-                            <Paragraph style={{ textAlign: 'center' }}>{auth?.user.email}</Paragraph>
-                        </Card.Content>
-                    </Card>
+                
+                    {
+                        auth.loading?
+                        <View style={{marginTop:'50%'}}>
+                            <ActivityIndicator size={'large'} animating={true} color='#e62e2d' />
+                            <Text style={{marginTop:10,fontSize:20,textAlign:'center'}}>Loading...</Text>
+                        </View>
+                        :
+                        <Card style={{ borderColor: '#ddd', borderWidth: 0.5 }}>
+                            <Card.Content>
+                                <Title style={{ textAlign: 'center' }}>{auth?.user.namalengkap}</Title>
+                                {/* <Divider style={{ height: 3, marginVertical: 5 }} /> */}
+                                <Paragraph style={{ textAlign: 'center' }}>@{auth?.user.username}</Paragraph>
+                                <Paragraph style={{ textAlign: 'center' }}>{auth?.user.email}</Paragraph>
+                            </Card.Content>
+                        </Card>
+                    }
+                    
                 </View>
                 <View>
                     {/* <Text>{JSON.stringify(auth,0,2)}</Text> */}

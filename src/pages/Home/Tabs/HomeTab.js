@@ -1,13 +1,14 @@
 import React, { useEffect, version } from 'react';
 import { View, StyleSheet, Image, Dimensions, StatusBar, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
-import IconBoxMenu from '../../../component/IconBoxMenu';
 import header_img from '../../../assets/pramita-banner.png';
+import icon_article from '../../../assets/icons/icon_article.png';
 import icon_home_work from '../../../assets/icons/icon_home_work.png';
 import icon_directions_bike from '../../../assets/icons/icon_directions_bike.png';
 import icon_directions_run from '../../../assets/icons/icon_directions_run.png';
+import icon_shortcut_transfer_within_a_station from '../../../assets/icons/icon_shortcut_transfer_within_a_station.png';
 import { useSelector,useDispatch, connect } from 'react-redux';
 import { SET_AUTH_LOGOUT,SET_LIST_KEGIATAN,RESET_DETAIL_KEGIATAN } from '../../../store';
-import { Text, Divider, List, Card, Paragraph, Title, Badge, Chip, Surface } from 'react-native-paper';
+import { Text, Divider, List, Card, Paragraph, Title, Badge, Chip, Surface, Subheading } from 'react-native-paper';
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
 
 const HomeTab = ({ navigation }) => {
@@ -25,42 +26,77 @@ const HomeTab = ({ navigation }) => {
         dispatch(SET_LIST_KEGIATAN())
     },[])
 
-    function getDetail(payload) {
+    function getDetail(payload,title) {
         dispatch(RESET_DETAIL_KEGIATAN())
-        navigation.navigate('DetailKegiatan',{kegiatan:payload})
+        navigation.navigate('DetailKegiatan',{kegiatan:payload,title:title})
     }
 
     const ListKegiatan=(item)=>{
-        if(item.jenis === 'ambil_bahan'){
-            return(
-                <TouchableOpacity onPress={()=>getDetail(item)} key={item.id}>
-                    <List.Item
-                        title={item?.lab.nama}
-                        description={()=>
-                            <View style={{marginTop:5}}>
-                                <Text style={{backgroundColor:'#f87171',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Ambil Bahan</Text>
-                            </View>
-                        }
-                        right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
-                    />
-                    <Divider style={{height:0.5}}/>
-                </TouchableOpacity>
-            )
-        }else if(item.jenis === 'antar_bahan'){
-            return(
-                <TouchableOpacity onPress={()=>getDetail(item)} key={item.id}>
-                    <List.Item
-                        title={item?.lab.nama}
-                        description={()=>
-                            <View style={{marginTop:5}}>
-                                <Text style={{backgroundColor:'#004085',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Antar Bahan</Text>
-                            </View>
-                        }
-                        // right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
-                    />
-                    <Divider style={{height:0.5}}/>
-                </TouchableOpacity>
-            )
+        switch (item.jenis) {
+            case 'ambil_bahan':
+                return(
+                    <TouchableOpacity onPress={()=>getDetail(item,item.lab?.nama)} key={item.id}>
+                        <List.Item
+                            title={item?.lab.nama}
+                            description={()=>
+                                <View style={{marginTop:5}}>
+                                    <Text style={{backgroundColor:'#004085',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Ambil Bahan</Text>
+                                </View>
+                            }
+                            right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                    </TouchableOpacity>
+                )
+            case 'antar_bahan':
+                return(
+                    <TouchableOpacity onPress={()=>getDetail(item,item.lab?.nama)} key={item.id}>
+                        <List.Item
+                            title={item?.lab.nama}
+                            description={()=>
+                                <View style={{marginTop:5}}>
+                                    <Text style={{backgroundColor:'#16a34a',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Antar Bahan</Text>
+                                </View>
+                            }
+                            // right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                    </TouchableOpacity>
+                )
+            case 'instansi':
+                return(
+                    <TouchableOpacity onPress={()=>getDetail(item,item.instansi?.jenis_keg)} key={item.id}>
+                        <List.Item
+                            title={item?.instansi.tujuan}
+                            description={()=>
+                                <View style={{marginTop:5}}>
+                                    <Text style={{backgroundColor:'#721c24',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Instansi</Text>
+                                </View>
+                            }
+                            // right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                    </TouchableOpacity>
+                )
+            case 'pengantaran_dokter':
+                return(
+                    <TouchableOpacity onPress={()=>getDetail(item,item.pengantarandokter?.jenis_keg)} key={item.id}>
+                        <List.Item
+                            title={item?.pengantarandokter.tujuan}
+                            description={()=>
+                                <View style={{marginTop:5}}>
+                                    <Text style={{backgroundColor:'#856404',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Lain-lain</Text>
+                                </View>
+                            }
+                            // right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                    </TouchableOpacity>
+                )
+            default:
+                return(
+                    <Text>-</Text>
+                )
         }
     }
 
@@ -100,20 +136,24 @@ const HomeTab = ({ navigation }) => {
                                         <Text>Rujukan</Text>
                                     </Surface>
                                 </TouchableOpacity>
-                                <Surface style={styles.surface} elevation={10}>
-                                    <Image style={{width:50,height:50}} source={icon_home_work}></Image>
-                                    <Text>Instansi</Text>
-                                </Surface>
-                                
+                                <TouchableOpacity onPress={() => navigation.navigate('Instansi')}>
+                                    <Surface style={styles.surface} elevation={10}>
+                                        <Image style={{width:50,height:50}} source={icon_home_work}></Image>
+                                        <Text>Instansi</Text>
+                                    </Surface>
+                                </TouchableOpacity>
                             </View>
                             <View style={styles.blokMenu}>
+                                <TouchableOpacity onPress={() => navigation.navigate('PengandataranDokter')}>
+                                    <Surface style={styles.surface} elevation={10}>
+                                        <Image style={{width:50,height:50}} source={icon_shortcut_transfer_within_a_station}></Image>
+                                        <Text>Lain-lain</Text>
+                                    </Surface>
+                                </TouchableOpacity>
+                                
                                 <Surface style={styles.surface} elevation={10}>
-                                    <Image style={{width:50,height:50}} source={icon_directions_run}></Image>
-                                    <Text>Text</Text>
-                                </Surface>
-                                <Surface style={styles.surface} elevation={10}>
-                                    <Image style={{width:50,height:50}} source={icon_directions_run}></Image>
-                                    <Text>Text</Text>
+                                    <Image style={{width:50,height:50}} source={icon_article}></Image>
+                                    <Text>Lainnya</Text>
                                 </Surface>
                                 <Surface style={[styles.surface,{backgroundColor:'#fff',borderWidth:0}]}>
                                     {/* <Image style={{width:50,height:50}} source={icon_directions_run}></Image>
@@ -133,11 +173,12 @@ const HomeTab = ({ navigation }) => {
                                 />
                             </List.Section> */}
                             <Divider style={{height:1}}/>
-                            <Divider style={{height:1,marginTop:1}}/>
-                            <Title style={{padding:10}}>Kegiatan hari ini</Title>
-                            <Divider style={{height:1}}/>
+                            {/* <Divider style={{height:1,marginTop:1}}/> */}
+                            <Title style={{padding:10,backgroundColor:'#ddd'}}>Kegiatan hari ini</Title>
+                            {/* <Divider style={{height:1}}/> */}
                             <Divider style={{height:1,marginTop:1}}/>
                             
+                            {/* <Text>{JSON.stringify(kegiatan,0,2)}</Text> */}
                             <View>
                                 <View style={{padding:10}}>
                                     {

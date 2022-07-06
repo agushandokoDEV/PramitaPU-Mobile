@@ -17,7 +17,7 @@ const DetailKegiatan = ({route,navigation}) => {
 
     useEffect(()=>{
         getKegiatan()
-        navigation.setOptions({ title: params.kegiatan?.lab?.nama })
+        navigation.setOptions({ title: params.title })
     },[])
 
     function getKegiatan() {
@@ -25,121 +25,162 @@ const DetailKegiatan = ({route,navigation}) => {
     }
 
     const JenisKegiatan=()=>{
-        if(params.kegiatan.jenis === 'ambil_bahan'){
-            return(
-                <View>
-                    <List.Item
-                        title="Pasien :"
-                        description={()=>
-                            <Title>{params.kegiatan.ambilbahan?.nama_pasien}</Title>
-                        }
-                        left={() => <List.Icon icon="account-group" />}
-                    />
-                    <Divider style={{height:0.5}}/>
-                    <List.Item
-                        title="Yang Menyerahkan :"
-                        description={()=>
-                            <Title>{params.kegiatan.ambilbahan?.yg_menyerahkan != null ? params.kegiatan.ambilbahan?.yg_menyerahkan:'-'}</Title>
-                        }
-                        left={() => <List.Icon icon="account-arrow-right" />}
-                    />
-                    <Divider style={{height:0.5}}/>
-                    
-                    <List.Item
-                        title='Tanggal Pengiriman :'
-                        description={()=>
-                            <Subheading>{params.kegiatan.ambilbahan?.created_at != null? moment(params.kegiatan.ambilbahan?.created_at).locale('id').format('LLLL'):'-'}</Subheading>
-                        }
-                        left={() => <List.Icon icon="calendar-arrow-left" />}
-                    />
-                    <Divider style={{height:0.5}}/>
-                    <List.Item
-                        title="Yang Menerima :"
-                        description={()=>
-                            <Title>{params.kegiatan.ambilbahan?.yg_menerima != null?params.kegiatan.ambilbahan?.yg_menerima:'-'}</Title>
-                        }
-                        left={() => <List.Icon icon="account-arrow-left" />}
-                    />
-                    <Divider style={{height:0.5}}/>
-                    <List.Item
-                        title='Tanggal Penerimaan :'
-                        description={()=>
-                            <Subheading>{params.kegiatan.ambilbahan?.approved_at != null? moment(params.kegiatan.ambilbahan?.approved_at).locale('id').format('LLLL'):'-'}</Subheading>
-                        }
-                        left={() => <List.Icon icon="calendar-arrow-right" />}
-                    />
-                    <Divider style={{height:0.5}}/>
-                    
-                    <Card>
-                        <Card.Title
-                            title="Tabung"
-                            subtitle="Jenis & Jumlah"
+        switch (params.kegiatan.jenis) {
+            case 'ambil_bahan':
+                return(
+                    <View>
+                        <List.Item
+                            title="Pasien :"
+                            description={()=>
+                                <Title>{params.kegiatan.ambilbahan?.nama_pasien}</Title>
+                            }
+                            left={() => <List.Icon icon="account-group" />}
                         />
                         <Divider style={{height:0.5}}/>
-                        <Card.Content>
-                        {
-                            !kegiatan.detail.loading && kegiatan.detail.data?.listtabung != null?
-                                kegiatan.detail.data.listtabung.map((item,k)=>{
-                                    return(
-                                        <View key={item.id} style={{marginBottom:10}}>
-                                            <List.Item
-                                                title={'- '+item.tabung?.nama}
-                                                right={() => <View style={{justifyContent:'center'}}><Badge size={25} style={{backgroundColor:'#e62e2d'}}>{item.jumlah}</Badge></View>}
-                                            />
-                                            <Divider style={{height:0.5}}/>
-                                        </View>
-                                    )
-                                })
-                            :
-                            <View style={{marginTop:20}}>
-                                <ActivityIndicator animating={true} color='#e62e2d'/>
-                                <Text style={{textAlign:'center',marginTop:10}}>Loading...</Text>
-                            </View>
-                        }
-                        </Card.Content>
-                    </Card>
-                    
-                    {/* <ActivityIndicator animating={true} color='#e62e2d' /> */}
-                </View>
-            )
-        }else if(params.kegiatan.jenis === 'antar_bahan'){
-            return(
-                <View>
-                    <List.Item
-                        title="Pasien :"
-                        description={()=>
-                            <Title>{params.kegiatan.ambilbahan?.nama_pasien}</Title>
-                        }
-                        left={() => <List.Icon icon="account-group" />}
-                    />
-                    <Divider style={{height:0.5}}/>
-                    <List.Item
-                        title="Yang Menyerahkan :"
-                        description={()=>
-                            <Title>{params.kegiatan.ambilbahan?.yg_menyerahkan != null ? params.kegiatan.ambilbahan?.yg_menyerahkan:'-'}</Title>
-                        }
-                        left={() => <List.Icon icon="account-arrow-right" />}
-                    />
-                    <Divider style={{height:0.5}}/>
-                    
-                    <List.Item
-                        title='Tanggal Pengiriman :'
-                        description={()=>
-                            <Subheading>{params.kegiatan.ambilbahan?.created_at != null? moment(params.kegiatan.ambilbahan?.created_at).locale('id').format('LLLL'):'-'}</Subheading>
-                        }
-                        left={() => <List.Icon icon="calendar-arrow-left" />}
-                    />
-                    <Divider style={{height:0.5}}/>
-                    <List.Item
-                        title="Penerima :"
-                        description={()=>
-                            <Title>{params.kegiatan.ambilbahan?.yg_menerima != null?params.kegiatan.ambilbahan?.yg_menerima:'-'}</Title>
-                        }
-                        left={() => <List.Icon icon="account-arrow-left" />}
-                    />
-                </View>
-            )
+                        <List.Item
+                            title="Yang Menyerahkan :"
+                            description={()=>
+                                <Title>{params.kegiatan.ambilbahan?.yg_menyerahkan != null ? params.kegiatan.ambilbahan?.yg_menyerahkan:'-'}</Title>
+                            }
+                            left={() => <List.Icon icon="account-arrow-right" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                        
+                        <List.Item
+                            title='Tanggal Pengiriman :'
+                            description={()=>
+                                <Subheading>{params.kegiatan.ambilbahan?.created_at != null? moment(params.kegiatan.ambilbahan?.created_at).locale('id').format('LLLL'):'-'}</Subheading>
+                            }
+                            left={() => <List.Icon icon="calendar-arrow-left" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                        <List.Item
+                            title="Yang Menerima :"
+                            description={()=>
+                                <Title>{params.kegiatan.ambilbahan?.yg_menerima != null?params.kegiatan.ambilbahan?.yg_menerima:'-'}</Title>
+                            }
+                            left={() => <List.Icon icon="account-arrow-left" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                        <List.Item
+                            title='Tanggal Penerimaan :'
+                            description={()=>
+                                <Subheading>{params.kegiatan.ambilbahan?.approved_at != null? moment(params.kegiatan.ambilbahan?.approved_at).locale('id').format('LLLL'):'-'}</Subheading>
+                            }
+                            left={() => <List.Icon icon="calendar-arrow-right" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                        
+                        <Card>
+                            <Card.Title
+                                title="Tabung"
+                                subtitle="Jenis & Jumlah"
+                            />
+                            <Divider style={{height:0.5}}/>
+                            <Card.Content>
+                            {
+                                !kegiatan.detail.loading && kegiatan.detail.data?.listtabung != null?
+                                    kegiatan.detail.data.listtabung.map((item,k)=>{
+                                        return(
+                                            <View key={item.id} style={{marginBottom:10}}>
+                                                <List.Item
+                                                    title={'- '+item.tabung?.nama}
+                                                    right={() => <View style={{justifyContent:'center'}}><Badge size={25} style={{backgroundColor:'#e62e2d'}}>{item.jumlah}</Badge></View>}
+                                                />
+                                                <Divider style={{height:0.5}}/>
+                                            </View>
+                                        )
+                                    })
+                                :
+                                <View style={{marginTop:20}}>
+                                    <ActivityIndicator animating={true} color='#e62e2d'/>
+                                    <Text style={{textAlign:'center',marginTop:10}}>Loading...</Text>
+                                </View>
+                            }
+                            </Card.Content>
+                        </Card>
+                        
+                        {/* <ActivityIndicator animating={true} color='#e62e2d' /> */}
+                    </View>
+                )
+            case 'antar_bahan':
+                return(
+                    <View>
+                        <List.Item
+                            title='Tanggal Pengiriman :'
+                            description={()=>
+                                <Subheading>{params.kegiatan.antarbahan?.created_at != null? moment(params.kegiatan.antarbahan?.created_at).locale('id').format('LLLL'):'-'}</Subheading>
+                            }
+                            left={() => <List.Icon icon="calendar-arrow-left" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                        <List.Item
+                            title="Penerima :"
+                            description={()=>
+                                <Title>{params.kegiatan.antarbahan?.penerima != null?params.kegiatan.antarbahan?.penerima:'-'}</Title>
+                            }
+                            left={() => <List.Icon icon="account-arrow-left" />}
+                        />
+                    </View>
+                )
+            case 'instansi':
+                return(
+                    <View>
+                        <List.Item
+                            title='Tanggal :'
+                            description={()=>
+                                <Subheading>{params.kegiatan.instansi?.created_at != null? moment(params.kegiatan.intansi?.created_at).locale('id').format('LLLL'):'-'}</Subheading>
+                            }
+                            left={() => <List.Icon icon="calendar-arrow-left" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                        <List.Item
+                            title="Tujuan :"
+                            description={()=>
+                                <Title>{params.kegiatan.instansi?.tujuan != null?params.kegiatan.instansi?.tujuan:'-'}</Title>
+                            }
+                            left={() => <List.Icon icon="bank" />}
+                        />
+                        <List.Item
+                            title="Status :"
+                            description={()=>
+                                <Title>{params.kegiatan.instansi?.ket != null?params.kegiatan.instansi?.ket:'-'}</Title>
+                            }
+                            left={() => <List.Icon icon="calendar-question" />}
+                        />
+                    </View>
+                )
+            case 'pengantaran_dokter':
+                return(
+                    <View>
+                        <List.Item
+                            title='Tanggal :'
+                            description={()=>
+                                <Subheading>{params.kegiatan.pengantarandokter?.created_at != null? moment(params.kegiatan.pengantarandokter?.created_at).locale('id').format('LLLL'):'-'}</Subheading>
+                            }
+                            left={() => <List.Icon icon="calendar-arrow-left" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                        <List.Item
+                            title="Tujuan :"
+                            description={()=>
+                                <Title>{params.kegiatan.pengantarandokter?.tujuan != null?params.kegiatan.pengantarandokter?.tujuan:'-'}</Title>
+                            }
+                            left={() => <List.Icon icon="doctor" />}
+                        />
+                        <List.Item
+                            title="Status :"
+                            description={()=>
+                                <Title>{params.kegiatan.pengantarandokter?.ket != null?params.kegiatan.pengantarandokter?.ket:'-'}</Title>
+                            }
+                            left={() => <List.Icon icon="calendar-question" />}
+                        />
+                    </View>
+                )
+            default:
+                break;
         }
+        
     }
 
     return (
@@ -152,7 +193,7 @@ const DetailKegiatan = ({route,navigation}) => {
                     onRefresh={getKegiatan}
                 />
             }>
-                <Text>{JSON.stringify(params,0,2)}</Text>
+                {/* <Text>{JSON.stringify(params,0,2)}</Text> */}
                 {/* <Text>{JSON.stringify(kegiatan.detail,0,2)}</Text> */}
                 <View style={styles.container}>
                     {JenisKegiatan()}

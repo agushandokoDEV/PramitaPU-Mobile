@@ -16,7 +16,7 @@ const Home = ({ navigation }) => {
     const dispatch = useDispatch();
 
     useEffect(()=>{
-        if(!auth.isLogin){
+        if(!auth.loading && !auth.isLogin){
             navigation.replace('Starter')
         }
     },[auth])
