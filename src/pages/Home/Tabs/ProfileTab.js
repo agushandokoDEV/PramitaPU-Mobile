@@ -19,6 +19,10 @@ const ProfileTab = () => {
                     </View>
                 </View>
 
+                {/* <View style={{marginTop:'50%'}}>
+                    <ActivityIndicator size={'large'} animating={true} color='#e62e2d' />
+                    <Text style={{marginTop:10,fontSize:20,textAlign:'center'}}>Loading...</Text>
+                </View> */}
                 <View style={styles.container}>
                 
                     {
@@ -30,10 +34,10 @@ const ProfileTab = () => {
                         :
                         <Card style={{ borderColor: '#ddd', borderWidth: 0.5 }}>
                             <Card.Content>
-                                <Title style={{ textAlign: 'center' }}>{auth?.user.namalengkap}</Title>
+                                <Title style={{ textAlign: 'center' }}>{auth.user?.namalengkap}</Title>
                                 {/* <Divider style={{ height: 3, marginVertical: 5 }} /> */}
-                                <Paragraph style={{ textAlign: 'center' }}>@{auth?.user.username}</Paragraph>
-                                <Paragraph style={{ textAlign: 'center' }}>{auth?.user.email}</Paragraph>
+                                <Paragraph style={{ textAlign: 'center' }}>@{auth.user?.username}</Paragraph>
+                                <Paragraph style={{ textAlign: 'center' }}>{auth.user?.email}</Paragraph>
                             </Card.Content>
                         </Card>
                     }
@@ -48,7 +52,7 @@ const ProfileTab = () => {
     );
 }
 
-const { height, width } = Dimensions.get('window');
+// const { height, width } = Dimensions.get('window');
 const styles = StyleSheet.create({
     main: {
         flex: 1,

@@ -22,7 +22,11 @@ const Home = ({ navigation }) => {
     },[auth])
 
     function logout() {
-        dispatch(SET_AUTH_LOGOUT())
+        dispatch(SET_AUTH_LOGOUT({
+            isLogin: auth.isLogin,
+            user: auth.user,
+            token: auth.token
+        }))
     }
 
     return (

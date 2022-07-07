@@ -59,12 +59,15 @@ const SET_AUTH_LOGIN = (params) => {
     }
 }
 
-const SET_AUTH_LOGOUT = () => {
-    console.log(store.getState().auth.token)
+const SET_AUTH_LOGOUT = (params) => {
+    // console.log(store.getState().auth.token)
     return (dispatch) => {
         dispatch({
             type: AUTH_LOGOUT,
-            loading: true
+            loading: true,
+            isLogin: params.isLogin,
+            user: params.user,
+            token: params.token,
         });
 
         axios.post(API_URL+'/account/logout', {
@@ -74,7 +77,7 @@ const SET_AUTH_LOGOUT = () => {
             }
         }).then(function (res) {
             const {success,data,token,message}=res.data
-            console.log(res.data)
+            // console.log(res.data)
             if(success){
                 dispatch({
                     type: AUTH_LOGOUT,

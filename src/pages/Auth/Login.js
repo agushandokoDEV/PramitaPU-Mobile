@@ -76,8 +76,8 @@ const Login = ({ navigation }) => {
                             /> */}
 
                             <TextInput
-                                label="Username"
-                                placeholder='Masukan Username'
+                                label="NIK"
+                                placeholder='NIK'
                                 value={akun.username}
                                 mode='outlined'
                                 onChangeText={(val) => Setakun({username:val,password:akun.password})}
@@ -93,7 +93,7 @@ const Login = ({ navigation }) => {
                             />
                             <TextInput
                                 label="Password"
-                                placeholder='Masukan Password'
+                                placeholder='Password'
                                 value={akun.password}
                                 mode='outlined'
                                 onChangeText={(val) => Setakun({password:val,username:akun.username})}
