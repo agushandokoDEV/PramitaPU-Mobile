@@ -4,24 +4,28 @@ import FormInput from '../../component/FormInput';
 import { Button, Snackbar, TextInput } from 'react-native-paper';
 import logo_banner from '../../assets/pramita-banner-logo.png'
 import { useSelector,useDispatch, connect } from 'react-redux';
-import { SET_AUTH_LOGIN,SET_AUTH_RESET } from '../../store';
+import { SET_AUTH_REGISTER,SET_AUTH_RESET } from '../../store';
 import splashscreen_img from '../../assets/pramita-banner.png';
 import logo_img from '../../assets/1024.png';
 
-const Login = ({ navigation }) => {
+const Register = ({ navigation }) => {
 
     const { auth } = useSelector(state => state);
     const dispatch = useDispatch();
 
     // console.log('auth ',auth)
 
-    const [showPwd, SetPhowPwd] = useState(true)
+    const [showPwd, SetShowPwd] = useState(true)
+    const [showRePwd, SetShowRePwd] = useState(true)
     const [openMsg, setOpenMsg] = useState(false);
+    const [errMsg, setErrMsg] = useState('');
 
     const [akun, Setakun] = useState({
         username:'',
-        password:''
-    })
+        namalengkap:'',
+        password:'',
+        repassword:'',
+    });
 
     useEffect(()=>{
         if(auth.error != null){
@@ -30,6 +34,7 @@ const Login = ({ navigation }) => {
     },[])
 
     useEffect(()=>{
+        console.log(auth)
         if(auth.isLogin){
             navigation.replace('Home')
         }
@@ -38,10 +43,21 @@ const Login = ({ navigation }) => {
         }
     },[auth])
 
-    const _onLogin = () => {
-        dispatch(
-            SET_AUTH_LOGIN(akun)
-        );
+    const _onRegister = () => {
+        // console.log(akun)
+        if(akun.password === akun.repassword){
+            dispatch(
+                SET_AUTH_REGISTER({
+                    username:akun.username,
+                    namalengkap:akun.namalengkap,
+                    password:akun.password,
+                })
+            );
+        }else{
+            setErrMsg('Password tidak sama')
+            setOpenMsg(true)
+        }
+        
     }
 
     function resetAuth() {
@@ -56,6 +72,7 @@ const Login = ({ navigation }) => {
                 
                 <Image source={logo_img} resizeMode='cover' style={{ width: '100%',height:200}} />
                 <View style={styles.container}>
+                    {/* <Text>{JSON.stringify(auth,0,2)}</Text> */}
                     <KeyboardAvoidingView behavior='padding' style={{ flex: 1 }} enabled>
                         <View style={styles.boxform}>
                             {/* <View style={{ alignItems: 'center' }}>
@@ -80,23 +97,52 @@ const Login = ({ navigation }) => {
                                 placeholder='NIK'
                                 value={akun.username}
                                 mode='outlined'
-                                onChangeText={(val) => Setakun({username:val,password:akun.password})}
+                                onChangeText={(val) => Setakun({
+                                    username:val,
+                                    namalengkap:akun.namalengkap,
+                                    password:akun.password,
+                                    repassword:akun.repassword,
+                                })}
                                 selectionColor='#475569'
-                                // underlineColor='red'
-                                // activeUnderlineColor='#ced4da'
+                                outlineColor='#ced4da'
+                                activeOutlineColor='#ced4da'
+                                // dense={true}
+                                error={false}
+                                theme={{ colors: { primary: '#475569',underlineColor:'transparent',}}}
+                                left={<TextInput.Icon name="account-lock" />}
+                            />
+
+                            <TextInput
+                                label="Nama Lengkap"
+                                placeholder='Nama Lengkap'
+                                value={akun.namalengkap}
+                                mode='outlined'
+                                onChangeText={(val) => Setakun({
+                                    namalengkap:val,
+                                    username:akun.username,
+                                    password:akun.password,
+                                    repassword:akun.repassword
+                                })}
+                                selectionColor='#475569'
                                 outlineColor='#ced4da'
                                 activeOutlineColor='#ced4da'
                                 // dense={true}
                                 error={false}
                                 theme={{ colors: { primary: '#475569',underlineColor:'transparent',}}}
                                 left={<TextInput.Icon name="account" />}
+                                style={{marginTop:5}}
                             />
                             <TextInput
                                 label="Password"
                                 placeholder='Password'
                                 value={akun.password}
                                 mode='outlined'
-                                onChangeText={(val) => Setakun({password:val,username:akun.username})}
+                                onChangeText={(val) => Setakun({
+                                    password:val,
+                                    username:akun.username,
+                                    namalengkap:akun.namalengkap,
+                                    repassword:akun.repassword,
+                                })}
                                 selectionColor='#475569'
                                 // underlineColor='red'
                                 // activeUnderlineColor='#ced4da'
@@ -108,7 +154,34 @@ const Login = ({ navigation }) => {
                                 secureTextEntry={showPwd}
                                 left={<TextInput.Icon name="lock" />}
                                 right={
-                                    <TextInput.Icon name={showPwd?"eye-off-outline":"eye-outline"} onPress={()=>SetPhowPwd(!showPwd)} />
+                                    <TextInput.Icon name={showPwd?"eye-off-outline":"eye-outline"} onPress={()=>SetShowPwd(!showPwd)} />
+                                }
+                                style={{marginTop:5}}
+                            />
+
+                            <TextInput
+                                label="Ulangi Password"
+                                placeholder='Ulangi Password'
+                                value={akun.repassword}
+                                mode='outlined'
+                                onChangeText={(val) => Setakun({
+                                    repassword:val,
+                                    password:akun.password,
+                                    username:akun.username,
+                                    namalengkap:akun.namalengkap,
+                                })}
+                                selectionColor='#475569'
+                                // underlineColor='red'
+                                // activeUnderlineColor='#ced4da'
+                                outlineColor='#ced4da'
+                                activeOutlineColor='#ced4da'
+                                // dense={true}
+                                error={false}
+                                theme={{ colors: { primary: '#475569',underlineColor:'transparent',}}}
+                                secureTextEntry={showRePwd}
+                                left={<TextInput.Icon name="lock" />}
+                                right={
+                                    <TextInput.Icon name={showRePwd?"eye-off-outline":"eye-outline"} onPress={()=>SetShowRePwd(!showRePwd)} />
                                 }
                                 style={{marginTop:5}}
                             />
@@ -125,24 +198,25 @@ const Login = ({ navigation }) => {
                                 secureTextEntry={true}
                             /> */}
                             <View style={{ marginTop: 15,marginBottom:50 }}>
+                                
                                 <Button
                                     loading={auth.loading}
-                                    disabled={auth.loading || akun.username ==='' || akun.password ===''?true:false} 
-                                    icon='login' 
-                                    style={styles.btnSubmit} 
-                                    mode="contained" 
-                                    onPress={() => _onLogin()}>
-                                    {auth.loading?'Loading':'MASUK'}
-                                </Button>
-
-                                <Button
-                                    // loading={auth.loading}
-                                    // disabled={auth.loading} 
+                                    disabled={auth.loading} 
                                     icon='account-group' 
                                     style={styles.btnReg} 
                                     mode="contained" 
-                                    onPress={() => navigation.navigate('Register')}>
-                                    DAFTAR AKUN
+                                    onPress={_onRegister}>
+                                    {auth.loading?'Loading':'DAFTAR AKUN'}
+                                </Button>
+
+                                <Button
+                                    disabled={auth.loading} 
+                                    icon='login' 
+                                    style={styles.btnSubmit} 
+                                    mode="text"
+                                    color='grey'
+                                    onPress={() => navigation.goBack()}>
+                                    MASUK
                                 </Button>
                             </View>
                             
@@ -158,12 +232,12 @@ const Login = ({ navigation }) => {
                 onDismiss={()=>setOpenMsg(false)}
                 action={{
                     label: 'Ok',
-                    onPress: () => {
-                        resetAuth()
-                    },
+                    // onPress: () => {
+                    //     console.log('aaa')
+                    // },
                 }}>
                 {
-                    auth.error
+                    auth.error != null?auth.error:errMsg
                 }
             </Snackbar>
             {/* <ImageBackground style={styles.bg} source={logo_img} resizeMode='contain'>
@@ -207,14 +281,15 @@ const styles = StyleSheet.create({
         // paddingHorizontal:20
     },
     btnSubmit: {
-        backgroundColor: '#e62e2d',
+        marginTop:10,
+        // backgroundColor: '#e62e2d',
         height: 50,
         //marginTop: 10,
         alignContent: 'center',
         justifyContent: 'center'
     },
     btnReg: {
-        marginTop:10,
+        
         backgroundColor: '#e0a800',
         height: 50,
         //marginTop: 10,
@@ -226,4 +301,4 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => ({
     auth: state.auth
 })
-export default connect(mapStateToProps, { SET_AUTH_LOGIN })(Login);
+export default connect(mapStateToProps, { SET_AUTH_REGISTER })(Register);

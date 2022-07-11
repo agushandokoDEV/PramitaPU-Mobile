@@ -8,8 +8,8 @@ export * from './actions';
 const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
-    whitelist:['auth','lab','tabung'],
-    blacklist:['ambilbahan','antarbahan','kegiatan','instansi']
+    whitelist:['auth','lab','tabung','jenisuraianpekerjaan'],
+    blacklist:['ambilbahan','antarbahan','kegiatan','instansi','keglainnya']
 }
 
 const persistedReducer = persistReducer(persistConfig, reducer);

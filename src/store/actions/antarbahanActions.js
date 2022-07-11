@@ -2,6 +2,7 @@ import axios from "axios";
 import { ANTAR_BAHAN } from "../actionsType";
 import { API_URL } from "@env";
 import store from "..";
+import Api from "../../helpers/Api";
 
 const SET_ANTAR_BAHAN = (params) => {
 
@@ -18,7 +19,7 @@ const SET_ANTAR_BAHAN = (params) => {
             error: null
         });
 
-        axios.post(API_URL+'/antar-bahan',formdata, {
+        Api.post('/antar-bahan',formdata, {
             headers: {
                 Authorization:"Bearer "+store.getState().auth.token,
                 Accept: "application/json",

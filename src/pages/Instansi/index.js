@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Text, View, ScrollView, StyleSheet, KeyboardAvoidingView} from 'react-native';
-import { Button, TextInput, Snackbar, Modal, Provider, Portal, ActivityIndicator, RadioButton, HelperText } from 'react-native-paper';
+import { Button, TextInput, Snackbar, Modal, Provider, Portal, ActivityIndicator, RadioButton, HelperText, Checkbox, List, Divider, Title } from 'react-native-paper';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { SET_ADD_INSTANSI,SET_ADD_INSTANSI_RESET } from '../../store';
 
@@ -14,6 +14,8 @@ const Instansi = ({ navigation }) => {
     const [jeniskeglain, SetKegLain] = useState('');
     const [tujuan, SetTujuan] = useState('');
     const [status, SetStatus] = useState('');
+    const [listSelectedKeg, SETlistSelectedkeg] = useState([]);
+    const [listDataKeg, SETlistdatakeg] = useState([]);
 
     useEffect(()=>{
         dispatch(SET_ADD_INSTANSI_RESET())
@@ -30,9 +32,21 @@ const Instansi = ({ navigation }) => {
         SetKeg('')
     }
 
+    const onCheckKeg = (key) => {
+        var temp = listSelectedKeg;
+        var kegselected = listDataKeg;
+        if (temp.includes(key.id)) {
+            SETlistSelectedkeg(temp.filter(item => item !== key.id))
+            SETlistdatakeg(kegselected.filter(item => item !== key.id))
+        } else {
+            SETlistSelectedkeg(old => [...old, key.id])
+            SETlistdatakeg(old => [...old, key.id])
+        }
+    }
+
     function kirim() {
         dispatch(SET_ADD_INSTANSI({
-            jenis_keg:jeniskeglain ===''?jeniskeg:jeniskeglain,
+            jenis_keg:listDataKeg,
             tujuan:tujuan,
             ket:status
         }))
@@ -45,7 +59,7 @@ const Instansi = ({ navigation }) => {
                     <KeyboardAvoidingView behavior='padding' style={{ flex: 1 }} enabled>
                         <View>
                             <View>
-                                <View style={{flexDirection:"row",justifyContent:'flex-start',alignItems:'center',marginTop:15}}>
+                                {/* <View style={{flexDirection:"row",justifyContent:'flex-start',alignItems:'center',marginTop:15}}>
                                     <RadioButton
                                         value="Antar Invoice"
                                         color='#e62e2d'
@@ -64,10 +78,37 @@ const Instansi = ({ navigation }) => {
                                         onPress={() => SetKeg('Antar Hasil')}
                                     />
                                     <Text style={{fontSize:16}}>Antar Hasil</Text>
-                                </View>
-                                
+                                </View> */}
+
+                                <Divider style={{height:1}}/>
+                                <Title style={{padding:10,backgroundColor:'#ddd'}}>Nama Instansi</Title>
+                                <Divider style={{height:1,marginTop:1}}/>
+                                <TextInput
+                                    label="Isi disini" 
+                                    mode='outlined' style={{marginBottom: 10}}
+                                    value={tujuan}
+                                    onChangeText={(val) => SetTujuan(val)}
+                                    outlineColor='#ced4da'
+                                    activeOutlineColor='#ced4da'
+                                    theme={{ colors: { primary: '#475569',underlineColor:'transparent',}}}
+                                />
+                                <Divider style={{height:1}}/>
+                                <Title style={{padding:10,backgroundColor:'#ddd'}}>Jenis Kegiatan</Title>
+                                <Divider style={{height:1,marginTop:1}}/>
+                                <List.Item
+                                    style={{padding:0}}
+                                    title='Antar Invoice'
+                                    // titleStyle={{fontSize:18}}
+                                    left={() => <View style={{justifyContent:'center'}}><Checkbox.Item status={listSelectedKeg.includes('Antar Invoice') ? 'checked' : 'unchecked'} color='#e62e2d' onPress={()=>onCheckKeg({id:'Antar Invoice'})}/></View>}
+                                />
+                                <List.Item
+                                    style={{padding:0}}
+                                    title='Antar Hasil'
+                                    // titleStyle={{fontSize:18}}
+                                    left={() => <View style={{justifyContent:'center'}}><Checkbox.Item status={listSelectedKeg.includes('Antar Hasil') ? 'checked' : 'unchecked'} color='#e62e2d' onPress={()=>onCheckKeg({id:'Antar Hasil'})}/></View>}
+                                />
                             </View>
-                            <TextInput
+                            {/* <TextInput
                                 label="Kegiatan lainnya" 
                                 mode='outlined'
                                 value={jeniskeglain}
@@ -79,18 +120,13 @@ const Instansi = ({ navigation }) => {
                             />
                             <HelperText type='info' padding='none' style={{marginTop:0,marginBottom:10}}>
                                 Kosongkan jika tidak perlu
-                            </HelperText>
+                            </HelperText> */}
+                            
+                            <Divider style={{height:1}}/>
+                                <Title style={{padding:10,backgroundColor:'#ddd'}}>Status Kegiatan</Title>
+                                <Divider style={{height:1,marginTop:1}}/>
                             <TextInput
-                                label="Tujuan" 
-                                mode='outlined' style={{marginBottom: 10}}
-                                value={tujuan}
-                                onChangeText={(val) => SetTujuan(val)}
-                                outlineColor='#ced4da'
-                                activeOutlineColor='#ced4da'
-                                theme={{ colors: { primary: '#475569',underlineColor:'transparent',}}}
-                            />
-                            <TextInput
-                                label="Status" 
+                                label="Isi disini" 
                                 mode='outlined' style={{marginBottom: 10}}
                                 value={status}
                                 onChangeText={(val) => SetStatus(val)}
@@ -104,7 +140,7 @@ const Instansi = ({ navigation }) => {
             </ScrollView>
             <View style={styles.btncheckout}>
                 <Button
-                    disabled={jeniskeg != '' && tujuan !='' && status !='' || jeniskeglain !='' || instansi.loading? false:true}
+                    disabled={listDataKeg.length > 0 && tujuan !='' && status !='' || instansi.loading? false:true}
                     style={styles.btnSubmit} 
                     mode="contained" 
                     onPress={kirim}>

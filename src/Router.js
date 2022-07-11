@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Starter, Login, Home, ListLab, Formulir,AmbilBahan, DetailKegiatan,AntarBahan,Instansi,PengandataranDokter } from './pages';
+import { Starter, Login, Home, ListLab, Formulir,AmbilBahan, DetailKegiatan,AntarBahan,Instansi,PengandataranDokter, Register, Lainnya } from './pages';
 
 const Stack = createStackNavigator();
 
@@ -9,6 +9,7 @@ const Router = () => {
         <Stack.Navigator>
             <Stack.Screen name="Starter" component={Starter} options={{ headerShown: false }}></Stack.Screen>
             <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen>
+            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }}></Stack.Screen>
             {/* <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}></Stack.Screen> */}
             <Stack.Screen name="Home" component={Home} options={{
                 headerShown: false,
@@ -32,13 +33,19 @@ const Router = () => {
             <Stack.Screen name="Instansi" component={Instansi} options={{
                 headerShown: true,
                 headerTintColor: '#fff',
-                title: 'Instansi',
+                title: 'URAIAN TUGAS',
                 headerStyle: { backgroundColor: '#e62e2d', elevation: 0 }
             }}></Stack.Screen>
             <Stack.Screen name="PengandataranDokter" component={PengandataranDokter} options={{
                 headerShown: true,
                 headerTintColor: '#fff',
                 title: 'Lain-lain',
+                headerStyle: { backgroundColor: '#e62e2d', elevation: 0 }
+            }}></Stack.Screen>
+            <Stack.Screen name="Lainnya" component={Lainnya} options={{
+                headerShown: true,
+                headerTintColor: '#fff',
+                title: 'Lainnya',
                 headerStyle: { backgroundColor: '#e62e2d', elevation: 0 }
             }}></Stack.Screen>
             <Stack.Screen name="ListLab" component={ListLab} options={{

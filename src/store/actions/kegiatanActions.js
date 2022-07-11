@@ -2,6 +2,7 @@ import axios from "axios";
 import { GET_LIST_KEGIATAN,GET_DETAIL_KEGIATAN,GET_RIWAYAT_KEGIATAN } from "../actionsType";
 import { API_URL } from "@env";
 import store from "..";
+import Api from "../../helpers/Api";
 
 const SET_LIST_KEGIATAN = () => {
 
@@ -13,7 +14,7 @@ const SET_LIST_KEGIATAN = () => {
             error: null
         });
 
-        axios.get(API_URL+'/kegiatan', {
+        Api.get('/kegiatan', {
             headers: {
                 Authorization:"Bearer "+store.getState().auth.token,
                 Accept: "application/json",
@@ -51,7 +52,7 @@ const SET_DETAIL_KEGIATAN = (id) => {
             error: null
         });
 
-        axios.get(API_URL+`/kegiatan/${id}`, {
+        Api.get(`/kegiatan/${id}`, {
             headers: {
                 Authorization:"Bearer "+store.getState().auth.token,
                 Accept: "application/json",
@@ -89,7 +90,7 @@ const SET_RIWAYAT_KEGIATAN = (id) => {
             error: null
         });
 
-        axios.get(API_URL+`/riwayat-kegiatan`, {
+        Api.get(`/riwayat-kegiatan`, {
             headers: {
                 Authorization:"Bearer "+store.getState().auth.token,
                 Accept: "application/json",

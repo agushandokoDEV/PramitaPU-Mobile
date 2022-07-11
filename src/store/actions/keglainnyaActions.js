@@ -1,32 +1,28 @@
 import axios from "axios";
-import { ADD_PENGANTARAN_DR } from "../actionsType";
+import { ADD_KEG_LAINNYA } from "../actionsType";
 import { API_URL } from "@env";
 import store from "..";
 import Api from "../../helpers/Api";
 
-const SET_ADD_PENGANTARAN_DR = (params) => {
+const SET_ADD_KEG_LAINNYA = (params) => {
 
     const formdata = new FormData();
-    // formdata.append('jenis_keg', params.jenis_keg);
+    formdata.append('jenis_keg', params.jenis_keg);
     formdata.append('tujuan', params.tujuan);
     formdata.append('ket', params.ket);
 
-    if(params.jenis_keg.length > 0){
-        params.jenis_keg.forEach(item => {
-            formdata.append(`jenisuraianpekerjaan[]`, item);
-        });
-    }
+    console.log(formdata)
 
     return (dispatch) => {
         dispatch({
-            type: ADD_PENGANTARAN_DR,
+            type: ADD_KEG_LAINNYA,
             loading:true,
             data: null,
             message: null,
             error: null
         });
 
-        Api.post('/pengantarandokter',formdata, {
+        Api.post('/lainnya',formdata, {
             headers: {
                 Authorization:"Bearer "+store.getState().auth.token,
                 Accept: "application/json",
@@ -35,7 +31,7 @@ const SET_ADD_PENGANTARAN_DR = (params) => {
             const {success,data,message}=res.data
             // console.log(data)
             dispatch({
-                type: ADD_PENGANTARAN_DR,
+                type: ADD_KEG_LAINNYA,
                 loading:false,
                 data: data,
                 message:message,
@@ -44,7 +40,7 @@ const SET_ADD_PENGANTARAN_DR = (params) => {
             
         }).catch(function (error) {
             dispatch({
-                type: ADD_PENGANTARAN_DR,
+                type: ADD_KEG_LAINNYA,
                 loading: false,
                 data: null,
                 message: null,
@@ -54,10 +50,10 @@ const SET_ADD_PENGANTARAN_DR = (params) => {
     }
 }
 
-const SET_ADD_PENGANTARAN_DR_RESET = () => {
+const SET_ADD_KEG_LAINNYA_RESET = () => {
     return (dispatch) => {
         dispatch({
-            type: ADD_PENGANTARAN_DR,
+            type: ADD_KEG_LAINNYA,
             loading: false,
             data: null,
             message: null,
@@ -66,4 +62,4 @@ const SET_ADD_PENGANTARAN_DR_RESET = () => {
     }
 }
 
-export {SET_ADD_PENGANTARAN_DR,SET_ADD_PENGANTARAN_DR_RESET}
+export {SET_ADD_KEG_LAINNYA,SET_ADD_KEG_LAINNYA_RESET}

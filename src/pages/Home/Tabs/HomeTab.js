@@ -32,10 +32,11 @@ const HomeTab = ({ navigation }) => {
     }
 
     const ListKegiatan=(item)=>{
+        // console.log(item.jenis)
         switch (item.jenis) {
             case 'ambil_bahan':
                 return(
-                    <TouchableOpacity onPress={()=>getDetail(item,item.lab?.nama)} key={item.id}>
+                    <TouchableOpacity onPress={()=>getDetail(item,'AMBIL BAHAN / KUNJUNGAN')} key={item.id}>
                         <List.Item
                             title={item?.lab.nama}
                             description={()=>
@@ -50,7 +51,7 @@ const HomeTab = ({ navigation }) => {
                 )
             case 'antar_bahan':
                 return(
-                    <TouchableOpacity onPress={()=>getDetail(item,item.lab?.nama)} key={item.id}>
+                    <TouchableOpacity onPress={()=>getDetail(item,'ANTAR BAHAN / RUJUKAN')} key={item.id}>
                         <List.Item
                             title={item?.lab.nama}
                             description={()=>
@@ -65,7 +66,7 @@ const HomeTab = ({ navigation }) => {
                 )
             case 'instansi':
                 return(
-                    <TouchableOpacity onPress={()=>getDetail(item,item.instansi?.jenis_keg)} key={item.id}>
+                    <TouchableOpacity onPress={()=>getDetail(item,'INSTANSI')} key={item.id}>
                         <List.Item
                             title={item?.instansi.tujuan}
                             description={()=>
@@ -80,12 +81,27 @@ const HomeTab = ({ navigation }) => {
                 )
             case 'pengantaran_dokter':
                 return(
-                    <TouchableOpacity onPress={()=>getDetail(item,item.pengantarandokter?.jenis_keg)} key={item.id}>
+                    <TouchableOpacity onPress={()=>getDetail(item,'Bacaan Dokter')} key={item.id}>
                         <List.Item
-                            title={item?.pengantarandokter.tujuan}
+                            title={item?.pengantarandokter?.tujuan}
                             description={()=>
                                 <View style={{marginTop:5}}>
-                                    <Text style={{backgroundColor:'#856404',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Lain-lain</Text>
+                                    <Text style={{backgroundColor:'#856404',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Bacaan Dokter</Text>
+                                </View>
+                            }
+                            // right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                    </TouchableOpacity>
+                )
+            case 'lainnya':
+                return(
+                    <TouchableOpacity onPress={()=>getDetail(item,'Uraian Pekerjaan')} key={item.id}>
+                        <List.Item
+                            title={item?.lainnya.jenis_keg}
+                            description={()=>
+                                <View style={{marginTop:5}}>
+                                    <Text style={{backgroundColor:'#23272b',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Lain-lain</Text>
                                 </View>
                             }
                             // right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
@@ -147,14 +163,16 @@ const HomeTab = ({ navigation }) => {
                                 <TouchableOpacity onPress={() => navigation.navigate('PengandataranDokter')}>
                                     <Surface style={styles.surface} elevation={10}>
                                         <Image style={{width:50,height:50}} source={icon_shortcut_transfer_within_a_station}></Image>
-                                        <Text>Lain-lain</Text>
+                                        <Text style={{textAlign:'center'}}>Bacaan Dokter</Text>
                                     </Surface>
                                 </TouchableOpacity>
                                 
-                                <Surface style={styles.surface} elevation={10}>
-                                    <Image style={{width:50,height:50}} source={icon_article}></Image>
-                                    <Text>Lainnya</Text>
-                                </Surface>
+                                <TouchableOpacity onPress={() => navigation.navigate('Lainnya')}>
+                                    <Surface style={styles.surface} elevation={10}>
+                                        <Image style={{width:50,height:50}} source={icon_article}></Image>
+                                        <Text>Lain-lain</Text>
+                                    </Surface>
+                                </TouchableOpacity>
                                 <Surface style={[styles.surface,{backgroundColor:'#fff',borderWidth:0}]}>
                                     {/* <Image style={{width:50,height:50}} source={icon_directions_run}></Image>
                                     <Text>Surface</Text> */}
@@ -173,9 +191,7 @@ const HomeTab = ({ navigation }) => {
                                 />
                             </List.Section> */}
                             <Divider style={{height:1}}/>
-                            {/* <Divider style={{height:1,marginTop:1}}/> */}
                             <Title style={{padding:10,backgroundColor:'#ddd'}}>Kegiatan hari ini</Title>
-                            {/* <Divider style={{height:1}}/> */}
                             <Divider style={{height:1,marginTop:1}}/>
                             
                             {/* <Text>{JSON.stringify(kegiatan,0,2)}</Text> */}

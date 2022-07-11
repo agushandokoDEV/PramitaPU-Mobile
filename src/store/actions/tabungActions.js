@@ -2,10 +2,11 @@ import axios from "axios";
 import { GET_LIST_TABUNG } from "../actionsType";
 import { API_URL } from "@env";
 import store from "..";
+import Api from "../../helpers/Api";
 
 const SET_LIST_TABUNG = () => {
 
-    // console.log(API_URL+'/tabung')
+    // console.log('/tabung')
     return (dispatch) => {
         dispatch({
             type: GET_LIST_TABUNG,
@@ -14,7 +15,7 @@ const SET_LIST_TABUNG = () => {
             error: null
         });
 
-        axios.get(API_URL+'/tabung', {
+        Api.get('/tabung', {
             headers: {
                 Authorization:"Bearer "+store.getState().auth.token,
                 Accept: "application/json",

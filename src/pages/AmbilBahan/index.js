@@ -18,14 +18,23 @@ const AmbilBahan = ({navigation}) => {
     const [ygMenyerahkan, SetygMenyerahkan] = useState('');
     const [listSelectedtabung, SETlistSelectedtabung] = useState([]);
     const [listDatatabung, SETlistdatatabung] = useState([]);
+    const [nobahan, setNobahan] = useState(false);
 
     useEffect(()=>{
         dispatch(SET_AMBIL_BAHAN_RESET())
     },[])
 
     useEffect(()=>{
-        getTabung()
+        if(tabung.list.length === 0){
+            getTabung()
+        }
+        
     },[])
+
+    useEffect(()=>{
+        SETlistSelectedtabung([])
+        SETlistdatatabung([])
+    },[nobahan])
 
     useEffect(()=>{
         if(ambilbahan.message != null || ambilbahan.error != null){
@@ -34,17 +43,19 @@ const AmbilBahan = ({navigation}) => {
     },[ambilbahan])
 
     const onCheckTabung = (key) => {
-        var temp = listSelectedtabung;
-        var datapayselected = listDatatabung;
-        if (temp.includes(key.id)) {
-            SETlistSelectedtabung(temp.filter(item => item !== key.id))
-            SETlistdatatabung(datapayselected.filter(item => item.id !== key.id))
-        } else {
-            SETlistSelectedtabung(old => [...old, key.id])
-            SETlistdatatabung(old => [...old, {
-                id:key.id,
-                jumlah:0
-            }])
+        if(!nobahan){
+            var temp = listSelectedtabung;
+            var datakegselected = listDatatabung;
+            if (temp.includes(key.id)) {
+                SETlistSelectedtabung(temp.filter(item => item !== key.id))
+                SETlistdatatabung(datakegselected.filter(item => item.id !== key.id))
+            } else {
+                SETlistSelectedtabung(old => [...old, key.id])
+                SETlistdatatabung(old => [...old, {
+                    id:key.id,
+                    jumlah:1
+                }])
+            }
         }
     }
 
@@ -63,7 +74,7 @@ const AmbilBahan = ({navigation}) => {
         if(operator === '+'){
             items[objIndex].jumlah = items[objIndex].jumlah + 1
         }else{
-            if(items[objIndex].jumlah != 0){
+            if(items[objIndex].jumlah > 1){
                 items[objIndex].jumlah = items[objIndex].jumlah - 1
             }
         }
@@ -116,7 +127,7 @@ const AmbilBahan = ({navigation}) => {
                         </View>
                         {
                             tabung.loading?
-                            Array.from(Array(5)).map((k,v)=>{
+                            Array.from(Array(3)).map((k,v)=>{
                                 return(
                                     <View key={v} style={{marginVertical:25}}>
                                         <SkeletonPlaceholder>
@@ -135,6 +146,7 @@ const AmbilBahan = ({navigation}) => {
                             })
                             :
                             <View style={{marginBottom:30}}>
+                            
                             {
                                 tabung.list.map((item,k)=>{
                                     return(
@@ -173,12 +185,20 @@ const AmbilBahan = ({navigation}) => {
                                                         </View>
                                                     </View>
                                                 }
-                                                right={props => <View style={{justifyContent:'center'}}><Checkbox.Item status={listSelectedtabung.includes(item.id) ? 'checked' : 'unchecked'} color='#e62e2d' onPress={()=>onCheckTabung(item)}/></View>}
+                                                right={() => <View style={{justifyContent:'center'}}><Checkbox.Item disabled={nobahan} status={listSelectedtabung.includes(item.id) ? 'checked' : 'unchecked'} color='#e62e2d' onPress={()=>onCheckTabung(item)}/></View>}
                                             />
                                         </View>
                                     )
                                 })
                             }
+
+                            <View style={styles.listbox}>
+                                <List.Item
+                                    title='Tidak ada Bahan'
+                                    // titleStyle={{fontSize:18}}
+                                    right={() => <View style={{justifyContent:'center'}}><Checkbox.Item status={nobahan ? 'checked' : 'unchecked'} color='#e62e2d' onPress={()=> setNobahan(!nobahan)}/></View>}
+                                />
+                            </View>
 
                             <TextInput
                                 label="Yang Menyerahkan" 
@@ -198,7 +218,7 @@ const AmbilBahan = ({navigation}) => {
             </ScrollView>
             <View style={styles.btncheckout}>
                 <Button
-                    disabled={listDatatabung.length > 0 && LabSelected != null && namapasien !='' && ygMenyerahkan !='' || ambilbahan.loading? false:true}
+                    disabled={listDatatabung.length > 0 && LabSelected != null && namapasien !='' && ygMenyerahkan !='' || nobahan === true || ambilbahan.loading? false:true}
                     style={styles.btnSubmit} 
                     mode="contained" 
                     onPress={kirim}>

@@ -2,6 +2,7 @@ import axios from "axios";
 import { AMBIL_BAHAN } from "../actionsType";
 import { API_URL } from "@env";
 import store from "..";
+import Api from "../../helpers/Api";
 
 const SET_AMBIL_BAHAN = (params) => {
 
@@ -25,7 +26,7 @@ const SET_AMBIL_BAHAN = (params) => {
             error: null
         });
 
-        axios.post(API_URL+'/ambil-bahan',formdata, {
+        Api.post('/ambil-bahan',formdata, {
             headers: {
                 Authorization:"Bearer "+store.getState().auth.token,
                 Accept: "application/json",

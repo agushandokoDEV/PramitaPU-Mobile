@@ -7,14 +7,18 @@ import kegiatanReducers from "./kegiatanReducers";
 import antarbahanReducers from "./antarbahanReducers";
 import instansiReducers from "./instansiReducers";
 import pengantarandokterReducers from "./pengantarandokterReducers";
+import keglainnyaReducers from "./keglainnyaReducers";
+import jenisuraianpekerjaanReducers from "./jenisuraianpekerjaanReducers";
 
 export default combineReducers({
     auth: authReducers,
     lab:labReducers,
+    jenisuraianpekerjaan:jenisuraianpekerjaanReducers,
     tabung:tabungReducers,
     ambilbahan:ambilbahanReducers,
     antarbahan:antarbahanReducers,
     kegiatan:kegiatanReducers,
     instansi:instansiReducers,
-    pengantarandokter:pengantarandokterReducers
+    pengantarandokter:pengantarandokterReducers,
+    keglainnya:keglainnyaReducers
 });

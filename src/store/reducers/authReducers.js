@@ -1,4 +1,4 @@
-import { AUTH_LOGIN, AUTH_LOGOUT } from "../actionsType";
+import { AUTH_LOGIN, AUTH_LOGOUT,AUTH_REGISTER } from "../actionsType";
 
 const initialAuthState = {
     loading: false,
@@ -11,6 +11,15 @@ const initialAuthState = {
 export default (state = initialAuthState, actions) => {
     switch (actions.type) {
         case AUTH_LOGIN:
+            return {
+                ...state,
+                loading: actions.loading,
+                isLogin: actions.isLogin,
+                user: actions.user,
+                token: actions.token,
+                error: actions.error
+            }
+        case AUTH_REGISTER:
             return {
                 ...state,
                 loading: actions.loading,

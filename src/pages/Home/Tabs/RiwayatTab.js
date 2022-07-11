@@ -33,7 +33,7 @@ const RiwayatTab = ({route,navigation}) => {
         switch (item.jenis) {
             case 'ambil_bahan':
                 return(
-                    <TouchableOpacity onPress={()=>getDetail(item,item.lab?.nama)} key={item.id}>
+                    <TouchableOpacity onPress={()=>getDetail(item,'AMBIL BAHAN / KUNJUNGAN')} key={item.id}>
                         <List.Item
                             title={item?.lab.nama}
                             description={()=>
@@ -49,7 +49,7 @@ const RiwayatTab = ({route,navigation}) => {
                 )
             case 'antar_bahan':
                 return(
-                    <TouchableOpacity onPress={()=>getDetail(item,item.lab?.nama)} key={item.id}>
+                    <TouchableOpacity onPress={()=>getDetail(item,'ANTAR BAHAN / RUJUKAN')} key={item.id}>
                         <List.Item
                             title={item?.lab.nama}
                             description={()=>
@@ -65,7 +65,7 @@ const RiwayatTab = ({route,navigation}) => {
                 )
             case 'instansi':
                 return(
-                    <TouchableOpacity onPress={()=>getDetail(item,item.instansi?.jenis_keg)} key={item.id}>
+                    <TouchableOpacity onPress={()=>getDetail(item,'INSTANSI')} key={item.id}>
                         <List.Item
                             title={item?.instansi.tujuan}
                             description={()=>
@@ -81,12 +81,29 @@ const RiwayatTab = ({route,navigation}) => {
                 )
             case 'pengantaran_dokter':
                 return(
-                    <TouchableOpacity onPress={()=>getDetail(item,item.pengantarandokter?.jenis_keg)} key={item.id}>
+                    <TouchableOpacity onPress={()=>getDetail(item,'Bacaan Dokter')} key={item.id}>
                         <List.Item
-                            title={item?.pengantarandokter.tujuan}
+                            title={item?.pengantarandokter?.tujuan}
                             description={()=>
                                 <View style={{marginTop:5}}>
-                                    <Text style={{backgroundColor:'#856404',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Lain-lain</Text>
+                                    <Text style={{backgroundColor:'#856404',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Bacaan Dokter</Text>
+                                    <Text style={{backgroundColor:'gray',width:200,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12,marginTop:3}}>{moment(item.created_at).locale('id').format('LLLL')}</Text>
+                                </View>
+                            }
+                            // right={() => item.ambilbahan.yg_menerima !=null?<List.Icon color='#155724' icon="account-check" />:<List.Icon color='#856404' icon="alert-circle" />}
+                        />
+                        <Divider style={{height:0.5}}/>
+                    </TouchableOpacity>
+                )
+
+            case 'lainnya':
+                return(
+                    <TouchableOpacity onPress={()=>getDetail(item,'Uraian Pekerjaan')} key={item.id}>
+                        <List.Item
+                            title={item?.lainnya.jenis_keg}
+                            description={()=>
+                                <View style={{marginTop:5}}>
+                                    <Text style={{backgroundColor:'#23272b',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Lain-lain</Text>
                                     <Text style={{backgroundColor:'gray',width:200,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12,marginTop:3}}>{moment(item.created_at).locale('id').format('LLLL')}</Text>
                                 </View>
                             }
