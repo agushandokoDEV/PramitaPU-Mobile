@@ -1,6 +1,6 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { Starter, Login, Home, ListLab, Formulir,AmbilBahan, DetailKegiatan,AntarBahan,Instansi,PengandataranDokter, Register, Lainnya } from './pages';
+import { Starter, Login, Home, ListLab, Formulir,AmbilBahan, DetailKegiatan,AntarBahan,Instansi,PengandataranDokter, Register, Lainnya, ListDokter } from './pages';
 
 const Stack = createStackNavigator();
 
@@ -52,6 +52,12 @@ const Router = () => {
                 headerShown: true,
                 headerTintColor: '#fff',
                 title: 'Pilih Lab',
+                headerStyle: { backgroundColor: '#e62e2d', elevation: 0 }
+            }}></Stack.Screen>
+            <Stack.Screen name="ListDokter" component={ListDokter} options={{
+                headerShown: true,
+                headerTintColor: '#fff',
+                title: 'Pilih Tujuan',
                 headerStyle: { backgroundColor: '#e62e2d', elevation: 0 }
             }}></Stack.Screen>
             <Stack.Screen name="DetailKegiatan" component={DetailKegiatan} options={{

@@ -8,3 +8,4 @@ export * from './instansiActions';
 export * from './pengantarandokterActions';
 export * from './keglainnyaActions';
 export * from './jenisuraianpekerjaanActions';
+export * from './dokterActions';

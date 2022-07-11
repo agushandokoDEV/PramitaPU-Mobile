@@ -15,6 +15,7 @@ const PengandataranDokter = ({ navigation }) => {
     const [status, SetStatus] = useState('');
     const [listSelecteduraian, SETlistSelecteduraian] = useState([]);
     const [listDatauraian, SETlistdatauraian] = useState([]);
+    const [DokterSelected, SetDokterSelected] = useState(null);
 
     useEffect(()=>{
         dispatch(SET_ADD_PENGANTARAN_DR_RESET())
@@ -49,11 +50,15 @@ const PengandataranDokter = ({ navigation }) => {
         dispatch(SET_LIST_JENIS_URAIAN_PEKERJAAN())
     }
 
+    function selectDokter(params) {
+        SetDokterSelected(params)
+    }
+
     function kirim() {
         // console.log(listDatauraian)
         dispatch(SET_ADD_PENGANTARAN_DR({
             jenis_keg:listDatauraian,
-            tujuan:tujuan,
+            tujuan:DokterSelected.id,
             ket:status
         }))
     }
@@ -84,7 +89,7 @@ const PengandataranDokter = ({ navigation }) => {
                             <Divider style={{height:1}}/>
                             <Title style={{padding:10,backgroundColor:'#ddd'}}>Tujuan & Status</Title>
                             <Divider style={{height:1,marginTop:1,marginBottom:10}}/>
-                            <TextInput
+                            {/* <TextInput
                                 label="Tujuan" 
                                 mode='outlined' style={{marginBottom: 10}}
                                 value={tujuan}
@@ -92,6 +97,14 @@ const PengandataranDokter = ({ navigation }) => {
                                 outlineColor='#ced4da'
                                 activeOutlineColor='#ced4da'
                                 theme={{ colors: { primary: '#475569',underlineColor:'transparent',}}}
+                            /> */}
+                            <TextInput
+                                style={{marginBottom: 10}}
+                                label="Pilih Tujuan"
+                                mode='outlined'
+                                right={<TextInput.Icon name="arrow-right" onPress={()=>navigation.navigate('ListDokter',{onSelectDokter:selectDokter})}/>}
+                                value={DokterSelected === null?'':DokterSelected?.nama}
+                                editable={false}
                             />
                             <TextInput
                                 label="Job Status / Penerima" 
@@ -108,7 +121,7 @@ const PengandataranDokter = ({ navigation }) => {
             </ScrollView>
             <View style={styles.btncheckout}>
                 <Button
-                    disabled={listDatauraian.length > 0 && tujuan !='' && status !='' || pengantarandokter.loading? false:true}
+                    disabled={listDatauraian.length > 0 && DokterSelected !='' && status !='' || pengantarandokter.loading? false:true}
                     style={styles.btnSubmit} 
                     mode="contained" 
                     onPress={kirim}>

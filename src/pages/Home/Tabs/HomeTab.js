@@ -83,7 +83,7 @@ const HomeTab = ({ navigation }) => {
                 return(
                     <TouchableOpacity onPress={()=>getDetail(item,'Bacaan Dokter')} key={item.id}>
                         <List.Item
-                            title={item?.pengantarandokter?.tujuan}
+                            title={item?.pengantarandokter?.dokter?.nama}
                             description={()=>
                                 <View style={{marginTop:5}}>
                                     <Text style={{backgroundColor:'#856404',width:90,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12}}>Bacaan Dokter</Text>

@@ -9,6 +9,7 @@ import instansiReducers from "./instansiReducers";
 import pengantarandokterReducers from "./pengantarandokterReducers";
 import keglainnyaReducers from "./keglainnyaReducers";
 import jenisuraianpekerjaanReducers from "./jenisuraianpekerjaanReducers";
+import dokterReducers from "./dokterReducers";
 
 export default combineReducers({
     auth: authReducers,
@@ -20,5 +21,6 @@ export default combineReducers({
     kegiatan:kegiatanReducers,
     instansi:instansiReducers,
     pengantarandokter:pengantarandokterReducers,
-    keglainnya:keglainnyaReducers
+    keglainnya:keglainnyaReducers,
+    dokter:dokterReducers
 });

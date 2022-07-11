@@ -218,11 +218,16 @@ const DetailKegiatan = ({route,navigation}) => {
                         />
                         <Divider style={{height:0.5}}/> */}
                         <List.Item
-                            title="Tujuan :"
+                            title="TUJUAN :"
                             description={()=>
                                 <View>
-                                    <Title>{kegiatan.detail?.data?.kegiatan?.pengantarandokter?.tujuan != null?kegiatan.detail?.data?.kegiatan?.pengantarandokter?.tujuan:'-'}</Title>
-                                    <Text style={{backgroundColor:'gray',width:200,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12,marginTop:3}}>{kegiatan.detail?.data?.kegiatan?.pengantarandokter?.created_at != null? moment(kegiatan.detail?.data?.kegiatan?.pengantarandokter?.created_at).locale('id').format('LLLL'):''}</Text>
+                                    <Text style={{fontSize:16,color:"black"}}>{kegiatan.detail?.data?.kegiatan?.pengantarandokter?.dokter?.nama != null?kegiatan.detail?.data?.kegiatan?.pengantarandokter?.dokter?.nama:'-'}</Text>
+                                    {
+                                        kegiatan.detail?.data?.kegiatan?.pengantarandokter?.created_at !=null ?
+                                        <Text style={{backgroundColor:'gray',width:200,textAlign:'center',borderRadius:50,color:"#fff",paddingVertical:1,fontSize:12,marginTop:5}}>{kegiatan.detail?.data?.kegiatan?.pengantarandokter?.created_at != null? moment(kegiatan.detail?.data?.kegiatan?.pengantarandokter?.created_at).locale('id').format('LLLL'):''}</Text>
+                                        :null
+                                    }
+                                    
                                 </View>
                             }
                             left={() => <List.Icon icon="doctor" />}
@@ -258,7 +263,7 @@ const DetailKegiatan = ({route,navigation}) => {
                         />
                         <Divider style={{height:0.5}}/>
                         <List.Item
-                            title="Status :"
+                            title="STATUS :"
                             description={()=>
                                 <Title>{kegiatan.detail?.data?.kegiatan?.pengantarandokter?.ket != null?kegiatan.detail?.data?.kegiatan?.pengantarandokter?.ket:'-'}</Title>
                             }

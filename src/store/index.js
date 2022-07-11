@@ -9,7 +9,7 @@ const persistConfig = {
     key: 'root',
     storage: AsyncStorage,
     whitelist:['auth','lab','tabung','jenisuraianpekerjaan'],
-    blacklist:['ambilbahan','antarbahan','kegiatan','instansi','keglainnya']
+    blacklist:['ambilbahan','antarbahan','kegiatan','instansi','keglainnya','dokter']
 }
 
 const persistedReducer = persistReducer(persistConfig, reducer);
