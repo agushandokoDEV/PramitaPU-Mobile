@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
-import { Button, Headline, Paragraph, Subheading, TextInput, Dialog, RadioButton,List,Checkbox, Divider, IconButton, Badge, Snackbar, Modal, Provider, Portal, ActivityIndicator } from 'react-native-paper';
+import { Text, View, ScrollView, StyleSheet, TouchableOpacity, TouchableWithoutFeedback, RefreshControl } from 'react-native';
+import { Button, Headline, Paragraph, Subheading, TextInput, Dialog, RadioButton,List,Checkbox, Divider, IconButton, Badge, Snackbar, Modal, Provider, Portal, ActivityIndicator, Title } from 'react-native-paper';
 import { useSelector,useDispatch, connect } from 'react-redux';
 import { SET_LIST_TABUNG,SET_AMBIL_BAHAN,SET_AMBIL_BAHAN_RESET } from '../../store';
 import SkeletonPlaceholder from "react-native-skeleton-placeholder";
@@ -93,8 +93,13 @@ const AmbilBahan = ({navigation}) => {
 
     return (
         <View style={styles.main}>
-            
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={tabung.loading}
+                        onRefresh={()=> dispatch(SET_LIST_TABUNG())}
+                    />
+                }>
                 
                 <View style={styles.container}>
                     
@@ -122,8 +127,12 @@ const AmbilBahan = ({navigation}) => {
                         <View style={{marginTop:10}}>
                             {/* <Headline>Tabung</Headline> */}
                             {/* <Text>{JSON.stringify(LabSelected)}</Text> */}
-                            <Subheading>Pilih Tabung & Jumlah</Subheading>
-                            <Divider style={{marginTop:10}} />
+                            {/* <Subheading>Pilih Tabung & Jumlah</Subheading>
+                            <Divider style={{marginTop:10}} /> */}
+
+                            <Divider style={{height:1}}/>
+                            <Title style={{padding:10,backgroundColor:'#ddd'}}>Pilih Tabung & Jumlah</Title>
+                            <Divider style={{height:1,marginTop:1}}/>
                         </View>
                         {
                             tabung.loading?

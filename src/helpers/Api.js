@@ -6,7 +6,8 @@ import { API_URL } from "@env";
 //   auth = "Bearer "+store.getState().auth.token
 // }
 // http://pramita-lab.herokuapp.com/api
-var host='http://pramita-lab.herokuapp.com/api';
+// http://192.168.0.107:8000/api
+var host='http://192.168.0.107:8000/api';
 
 const Api = Axios.create({
   baseURL: host,

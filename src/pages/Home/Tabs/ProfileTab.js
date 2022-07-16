@@ -32,12 +32,11 @@ const ProfileTab = () => {
                             <Text style={{marginTop:10,fontSize:20,textAlign:'center'}}>Loading...</Text>
                         </View>
                         :
-                        <Card style={{ borderColor: '#ddd', borderWidth: 0.5 }}>
+                        <Card style={{ borderColor: '#fff', borderWidth: 0.5 }}>
                             <Card.Content>
                                 <Title style={{ textAlign: 'center' }}>{auth.user?.namalengkap}</Title>
                                 {/* <Divider style={{ height: 3, marginVertical: 5 }} /> */}
-                                <Paragraph style={{ textAlign: 'center' }}>@{auth.user?.username}</Paragraph>
-                                <Paragraph style={{ textAlign: 'center' }}>{auth.user?.email}</Paragraph>
+                                <Paragraph style={{ textAlign: 'center' }}>{auth.user?.username}</Paragraph>
                             </Card.Content>
                         </Card>
                     }

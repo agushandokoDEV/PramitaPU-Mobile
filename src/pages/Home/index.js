@@ -36,7 +36,27 @@ const Home = ({ navigation }) => {
             screenOptions={{
                 tabBarActiveTintColor: '#e62e2d',
                 tabBarInactiveTintColor: '#ccc',
-                tabBarStyle: { backgroundColor: '#fff', borderTopColor: 'gold' }
+                // tabBarStyle: { backgroundColor: '#fff', borderTopColor: 'gold' }
+                tabBarStyle: {
+                    backgroundColor: '#fff',
+                    // borderTopColor: 'gold',
+                    borderWidth: 1,
+                    borderColor: '#ddd',
+                    height: 60,
+                    // borderTopLeftRadius: 15,
+                    // borderTopRightRadius: 15,
+                    borderRadius: 10,
+                    marginBottom: 10,
+                    // marginTop: 50,
+                    // position: 'absolute',
+                    marginHorizontal: 5,
+                    paddingVertical: 10,
+                    // paddingTop: 10,
+                    // paddingBottom: 10,
+                    elevation: 5,
+                    // width:'80%'
+                    //paddingVertical: 10,
+                }
             }}
         >
             <Tab.Screen name="HomeTabs" component={HomeTab} options={{

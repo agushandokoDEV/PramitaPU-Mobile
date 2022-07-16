@@ -150,6 +150,12 @@ const Login = ({ navigation }) => {
 
                         {/* <Text>{JSON.stringify(auth,0,2)}</Text> */}
                     </KeyboardAvoidingView>
+
+                    <View>
+                        <Text style={{textAlign:'center',fontStyle:'italic',fontSize:13}}>Create By Tiswantoro</Text>
+                        <Text style={{textAlign:'center',fontSize:12}}>Pramita LAB Martadinata Bandung</Text>
+                        {/* <Text style={{textAlign:'center',fontSize:12}}>2022</Text> */}
+                    </View>
                 </View>
             </ScrollView>
             <Snackbar

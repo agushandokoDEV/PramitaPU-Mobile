@@ -39,7 +39,7 @@ const Router = () => {
             <Stack.Screen name="PengandataranDokter" component={PengandataranDokter} options={{
                 headerShown: true,
                 headerTintColor: '#fff',
-                title: 'Lain-lain',
+                title: 'Bacaan Dokter',
                 headerStyle: { backgroundColor: '#e62e2d', elevation: 0 }
             }}></Stack.Screen>
             <Stack.Screen name="Lainnya" component={Lainnya} options={{

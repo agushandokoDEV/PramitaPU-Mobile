@@ -5,7 +5,7 @@ import icon_article from '../../../assets/icons/icon_article.png';
 import icon_home_work from '../../../assets/icons/icon_home_work.png';
 import icon_directions_bike from '../../../assets/icons/icon_directions_bike.png';
 import icon_directions_run from '../../../assets/icons/icon_directions_run.png';
-import icon_shortcut_transfer_within_a_station from '../../../assets/icons/icon_shortcut_transfer_within_a_station.png';
+import icon_book from '../../../assets/icons/icon_book.png';
 import { useSelector,useDispatch, connect } from 'react-redux';
 import { SET_AUTH_LOGOUT,SET_LIST_KEGIATAN,RESET_DETAIL_KEGIATAN } from '../../../store';
 import { Text, Divider, List, Card, Paragraph, Title, Badge, Chip, Surface, Subheading } from 'react-native-paper';
@@ -162,7 +162,7 @@ const HomeTab = ({ navigation }) => {
                             <View style={styles.blokMenu}>
                                 <TouchableOpacity onPress={() => navigation.navigate('PengandataranDokter')}>
                                     <Surface style={styles.surface} elevation={10}>
-                                        <Image style={{width:50,height:50}} source={icon_shortcut_transfer_within_a_station}></Image>
+                                        <Image style={{width:50,height:50}} source={icon_book}></Image>
                                         <Text style={{textAlign:'center'}}>Bacaan Dokter</Text>
                                     </Surface>
                                 </TouchableOpacity>
@@ -279,9 +279,12 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     surface: {
+        // backgroundColor:'#ddd',
         padding: 8,
+        paddingHorizontal:6,
         // height: 80,
-        width: 90,
+        minHeight:100,
+        width: width / 3.8,//90,
         alignItems: 'center',
         justifyContent: 'center',
         borderRadius:10,

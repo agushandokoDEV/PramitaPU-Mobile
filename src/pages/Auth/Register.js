@@ -201,7 +201,12 @@ const Register = ({ navigation }) => {
                                 
                                 <Button
                                     loading={auth.loading}
-                                    disabled={auth.loading} 
+                                    disabled={
+                                        auth.loading || 
+                                        akun.username ==='' || 
+                                        akun.namalengkap ==='' || 
+                                        akun.password ===''  || 
+                                        akun.repassword ==='' ?true:false} 
                                     icon='account-group' 
                                     style={styles.btnReg} 
                                     mode="contained" 
