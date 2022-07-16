@@ -7,7 +7,7 @@ import { API_URL } from "@env";
 // }
 // http://pramita-lab.herokuapp.com/api
 // http://192.168.0.107:8000/api
-var host='http://192.168.0.107:8000/api';
+var host='http://pramita-lab.herokuapp.com/api';
 
 const Api = Axios.create({
   baseURL: host,

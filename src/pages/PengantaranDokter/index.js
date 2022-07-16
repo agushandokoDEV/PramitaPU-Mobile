@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, ScrollView, StyleSheet, KeyboardAvoidingView} from 'react-native';
-import { Button, TextInput, Snackbar, Modal, Provider, Portal, ActivityIndicator, List, Checkbox, Divider, Title } from 'react-native-paper';
+import { Text, View, ScrollView, StyleSheet, KeyboardAvoidingView, RefreshControl} from 'react-native';
+import { Button, TextInput, Snackbar, Modal, Provider, Portal, ActivityIndicator, List, Checkbox, Divider, Title, HelperText } from 'react-native-paper';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { SET_ADD_PENGANTARAN_DR,SET_ADD_PENGANTARAN_DR_RESET,SET_LIST_JENIS_URAIAN_PEKERJAAN } from '../../store';
 
@@ -65,7 +65,13 @@ const PengandataranDokter = ({ navigation }) => {
 
     return(
         <View style={styles.main}>
-            <ScrollView>
+            <ScrollView
+                refreshControl={
+                    <RefreshControl
+                        refreshing={jenisuraianpekerjaan.loading}
+                        onRefresh={()=> dispatch(SET_LIST_JENIS_URAIAN_PEKERJAAN())}
+                    />
+                }>
                 <View style={styles.container}>
                     <KeyboardAvoidingView behavior='padding' style={{ flex: 1 }} enabled>
                         <View>
@@ -73,17 +79,39 @@ const PengandataranDokter = ({ navigation }) => {
                             <Title style={{padding:10,backgroundColor:'#ddd'}}>Uraian Pekerjaan</Title>
                             <Divider style={{height:1,marginTop:1}}/>
                             {
-                                jenisuraianpekerjaan.list.map((item,k)=>{
-                                    return(
-                                        <View key={item.id} style={styles.listbox}>
-                                            <List.Item
-                                                title={item.name}
-                                                // titleStyle={{fontSize:18}}
-                                                right={() => <View style={{justifyContent:'center'}}><Checkbox.Item status={listSelecteduraian.includes(item.id) ? 'checked' : 'unchecked'} color='#e62e2d' onPress={()=>onCheckUraian(item)}/></View>}
-                                            />
+                                jenisuraianpekerjaan.loading?
+                                    <View style={{paddingVertical:10}}>
+                                        <ActivityIndicator animating={true} size='small' color='#e62e2d'/>
+                                        <Text style={{textAlign:'center',marginTop:10}}>Memuat tabung...</Text>
+                                    </View>
+                                :
+                                <View>
+                                    {
+                                        !jenisuraianpekerjaan.loading && jenisuraianpekerjaan.list.length > 0?
+                                        jenisuraianpekerjaan.list.map((item,k)=>{
+                                            return(
+                                                <View key={item.id} style={styles.listbox}>
+                                                    <List.Item
+                                                        title={item.name}
+                                                        // titleStyle={{fontSize:18}}
+                                                        right={() => <View style={{justifyContent:'center'}}><Checkbox.Item status={listSelecteduraian.includes(item.id) ? 'checked' : 'unchecked'} color='#e62e2d' onPress={()=>onCheckUraian(item)}/></View>}
+                                                    />
+                                                </View>
+                                            )
+                                        })
+                                        :
+                                        <View>
+                                            {
+                                                jenisuraianpekerjaan.error != null?
+                                                <HelperText style={{textAlign:'center'}} type="error" visible={jenisuraianpekerjaan.error != null?true:false}>
+                                                    {jenisuraianpekerjaan.error}
+                                                </HelperText>
+                                                :
+                                                <Text style={{textAlign:'center',marginTop:10}}>Data tidak tersedia</Text>
+                                            }
                                         </View>
-                                    )
-                                })
+                                    }
+                                </View>
                             }
 
                             <Divider style={{height:1}}/>

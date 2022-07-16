@@ -118,7 +118,6 @@ const HomeTab = ({ navigation }) => {
 
     return (
         <View style={styles.main}>
-            
                 <View style={styles.divImgHeader}>
                     <Image source={header_img} style={styles.imgHeader} resizeMode='stretch' />
                 </View>
@@ -255,6 +254,7 @@ const styles = StyleSheet.create({
         height: height / 4
     },
     container: {
+        marginBottom:height / 8,
         //backgroundColor: '#fff',
         // marginVertical: 10
     },

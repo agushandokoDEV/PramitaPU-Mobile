@@ -48,7 +48,7 @@ const Home = ({ navigation }) => {
                     borderRadius: 10,
                     marginBottom: 10,
                     // marginTop: 50,
-                    // position: 'absolute',
+                    position: 'absolute',
                     marginHorizontal: 5,
                     paddingVertical: 10,
                     // paddingTop: 10,

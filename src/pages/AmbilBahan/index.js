@@ -227,7 +227,7 @@ const AmbilBahan = ({navigation}) => {
             </ScrollView>
             <View style={styles.btncheckout}>
                 <Button
-                    disabled={listDatatabung.length > 0 && LabSelected != null && namapasien !='' && ygMenyerahkan !='' || nobahan === true || ambilbahan.loading? false:true}
+                    disabled={(listDatatabung.length > 0 || nobahan === true) && LabSelected != null && namapasien !='' && ygMenyerahkan !='' || ambilbahan.loading? false:true}
                     style={styles.btnSubmit} 
                     mode="contained" 
                     onPress={kirim}>

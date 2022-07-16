@@ -185,7 +185,7 @@ const DetailKegiatan = ({route,navigation}) => {
                             description={()=>
                                 <View style={{marginTop:10}}>
                                     {
-                                        JSON.parse(params.kegiatan.instansi.jenis_keg).map((item,k)=>{
+                                        params.kegiatan.instansi.jenis_keg.map((item,k)=>{
                                             return(
                                                 <Text key={k} style={{fontSize:16,color:'black'}}>{'- '+item.keg}</Text>
                                             )

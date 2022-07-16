@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Text, View, ScrollView, StyleSheet, TouchableOpacity,LogBox, RefreshControl } from 'react-native';
+import { Text, View, ScrollView, StyleSheet, TouchableOpacity,LogBox, RefreshControl, Dimensions } from 'react-native';
 import { Button, Headline, Paragraph, Subheading, TextInput, Dialog, RadioButton,List,Checkbox, Divider, IconButton } from 'react-native-paper';
 import { useSelector,useDispatch, connect } from 'react-redux';
 import { SET_RIWAYAT_KEGIATAN,RESET_DETAIL_KEGIATAN } from '../../../store';
@@ -175,13 +175,15 @@ const RiwayatTab = ({route,navigation}) => {
     )
 }
 
+const { height, width } = Dimensions.get('window');
+
 const styles = StyleSheet.create({
     main: {
         flex: 1,
         backgroundColor: '#fff',
     },
     container: {
-
+        marginBottom:height / 8,
         paddingTop: 10,
         paddingHorizontal: 10
     },
